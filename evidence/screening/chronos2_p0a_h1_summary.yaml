@@ -1,0 +1,74 @@
+schema_version: 1
+experiment: covariate-harm-p0a-v1
+result_status: verified_screening_evidence
+source_manifest_status: screening_only
+config_hash: 902c15e63f71
+parent_p0_config_hash: b2ace898d038
+git_commit: 6b24a7ac16205ebe13cd37d366bb99625c5a94fb
+scientific_code_sha256: ef7e7c79aca2fb8244cfc174317962acf313b66c2c3ab6b5a82b3e9da8b90c4b
+backbone: chronos_2
+model:
+  checkpoint: amazon/chronos-2
+  checkpoint_revision: 29ec3766d36d6f73f0696f85560a422f50e8498c
+  torch_dtype: float32
+  model_load_seconds: 4.3500866859999405
+runtime:
+  created_at_utc: 2026-09-16T12:56:06.123681+00:00
+  python: 3.13.15
+  platform: Linux-6.6.122+-x86_64-with-glibc2.39
+  torch: 2.11.0+cu128
+  cuda: "12.8"
+  gpu: Tesla T4
+  fev: 0.11.0.dev0
+  chronos_forecasting: 2.2.2
+scope:
+  calibration_origins_only: true
+  sealed_evaluation_origins_instantiated: false
+  candidate_subset_search_enabled: false
+  full_p0_gate_computed: false
+h1_screen:
+  harmful_relative_loss: 0.05
+  aggregation_primary: task_macro_harm_rate
+  per_task:
+    epf_np:
+      paired_units: 12
+      finite_pairs: 12
+      excluded_nonfinite_pairs: 0
+      harmful_units: 2
+      harm_rate: 0.16666666666666666
+    rohlik_orders_1D:
+      paired_units: 21
+      finite_pairs: 21
+      excluded_nonfinite_pairs: 0
+      harmful_units: 12
+      harm_rate: 0.5714285714285714
+    rossmann_1D:
+      paired_units: 6690
+      finite_pairs: 6150
+      excluded_nonfinite_pairs: 540
+      harmful_units: 76
+      harm_rate: 0.012357723577235772
+    solar_with_weather_1H:
+      paired_units: 12
+      finite_pairs: 12
+      excluded_nonfinite_pairs: 0
+      harmful_units: 3
+      harm_rate: 0.25
+  task_macro_harm_rate: 0.25011324041811844
+  unit_micro_harm_rate: 0.015012106537530266
+  mean_relative_sql_gain_all_minus_target_only: 0.3774449921398369
+  finite_pair_count: 6195
+  excluded_nonfinite_pair_count: 540
+  minimum_task_macro_harm_rate: 0.20
+  h1_gate_passed: true
+interpretation:
+  chronos_h1_screen_passed: true
+  cross_backbone_gate_complete: false
+  paper_eligible: false
+  warning_messages_fatal: false
+  note: >-
+    Chronos-2 passes the preregistered task-macro H1 screen, but the unit-micro
+    rate is only 1.50% because Rossmann contributes nearly all units and has a
+    1.24% harm rate. The 540 non-finite Rossmann SQL pairs were excluded under
+    the frozen symmetric exclusion rule. TimesFM-3 must pass independently
+    before P0a can advance; this artifact alone does not support a paper claim.
