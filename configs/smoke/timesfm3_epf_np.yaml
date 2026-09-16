@@ -1,0 +1,44 @@
+schema_version: 1
+experiment: timesfm3-epf-np-input-strategy-smoke-v1
+status: smoke_only
+parent_p0_config_hash: b2ace898d038
+
+dataset:
+  dataset_path: autogluon/fev_datasets
+  dataset_config: epf_np
+  expected_fingerprint: 9830dda233defc6c
+  horizon: 24
+  seasonality: 24
+  calibration_origin_index: 0
+  expected_cutoff: -480
+  target: null
+  known_dynamic_columns: [Grid load forecast, Wind power forecast]
+  past_dynamic_columns: []
+
+variants:
+  - target_only
+  - all_dynamic
+
+model:
+  checkpoint: google/timesfm-3.0-pytorch
+  source_commit: 20191171b74f51bfead932b6b8d0c8f515e70f63
+  fev_wrapper_commit: 38007871dcf6dc6b04aed3a54d9cd86678d48d0b
+  fev_wrapper_path: models/timesfm-3/model.py
+  device: cuda
+  min_batch: 4
+  max_batch: 16
+  per_core_batch_size: 8
+  max_context_length: 15360
+  license: timesfm-non-commercial-license-v1.0
+
+metrics:
+  primary: SQL
+  secondary: [WQL, MASE, WAPE]
+  quantile_levels: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+
+guardrails:
+  require_cuda: true
+  academic_noncommercial_use_only: true
+  calibration_origins_only: true
+  sealed_evaluation_origins_instantiated: false
+  scientific_gate_computed: false

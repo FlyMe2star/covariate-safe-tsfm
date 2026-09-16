@@ -1,16 +1,15 @@
-"""Chronos-2 calibration-origin smoke runner.
-
-Heavy runtime dependencies are imported lazily so the core diagnostic package and
-its unit tests remain CPU-only.
-"""
+"""TimesFM 3 calibration-origin smoke runner using the pinned official FEV wrapper."""
 
 from __future__ import annotations
 
+import importlib.util
 import json
 import platform
+import sys
 import time
 from datetime import UTC, datetime
 from pathlib import Path
+from types import ModuleType
 from typing import Any
 
 from covsafe.config import canonical_config_hash, load_yaml
@@ -23,26 +22,45 @@ from covsafe.fev_smoke import (
 )
 from covsafe.protocol import temporal_origin_partition
 
-EXPECTED_SMOKE_CONFIG_HASH = "dc37b99f601c"
+EXPECTED_SMOKE_CONFIG_HASH = "56041b1ae960"
+_WRAPPER_MODULE_NAME = "covsafe_pinned_fev_timesfm3_wrapper"
 
 
-def run_chronos2_smoke(
+def _load_wrapper_module(wrapper_path: Path) -> ModuleType:
+    """Load the official pinned FEV TimesFM-3 wrapper once per Python process."""
+    if _WRAPPER_MODULE_NAME in sys.modules:
+        return sys.modules[_WRAPPER_MODULE_NAME]
+    spec = importlib.util.spec_from_file_location(_WRAPPER_MODULE_NAME, wrapper_path)
+    if spec is None or spec.loader is None:
+        raise ImportError(f"cannot load FEV wrapper from {wrapper_path}")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[_WRAPPER_MODULE_NAME] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+def run_timesfm3_smoke(
     repo_root: str | Path,
+    fev_checkout: str | Path,
     output_path: str | Path | None = None,
 ) -> dict[str, Any]:
-    """Run target-only and all-dynamic Chronos-2 inference on one calibration origin."""
+    """Run target-only and all-dynamic TimesFM 3 inference on one calibration origin."""
     import fev
     import torch
-    from chronos import BaseChronosPipeline
+    from huggingface_hub import HfApi, snapshot_download
 
     root = Path(repo_root).resolve()
-    config_path = root / "configs/smoke/chronos2_epf_np.yaml"
-    config = load_yaml(config_path)
+    upstream = Path(fev_checkout).resolve()
+    config = load_yaml(root / "configs/smoke/timesfm3_epf_np.yaml")
     config_hash = canonical_config_hash(config)
     if config_hash != EXPECTED_SMOKE_CONFIG_HASH:
         raise RuntimeError(
             f"smoke config hash mismatch: {config_hash} != {EXPECTED_SMOKE_CONFIG_HASH}"
         )
+    if git_commit(upstream) != config["model"]["fev_wrapper_commit"]:
+        raise RuntimeError("FEV wrapper checkout does not match the pinned commit")
+    if not config["guardrails"]["academic_noncommercial_use_only"]:
+        raise RuntimeError("TimesFM 3 weights are restricted to non-commercial use")
     if not config["guardrails"]["calibration_origins_only"]:
         raise RuntimeError("calibration-only guardrail must remain enabled")
     if config["guardrails"]["sealed_evaluation_origins_instantiated"]:
@@ -94,33 +112,40 @@ def run_chronos2_smoke(
             f"{dataset_fingerprint} != {config['dataset']['expected_fingerprint']}"
         )
 
-    dtype = getattr(torch, config["model"]["torch_dtype"])
-    load_start = time.monotonic()
-    pipeline = BaseChronosPipeline.from_pretrained(
-        config["model"]["checkpoint"],
-        device_map=config["model"]["device"],
-        dtype=dtype,
+    checkpoint_id = config["model"]["checkpoint"]
+    checkpoint_revision = HfApi().model_info(checkpoint_id).sha
+    checkpoint_path = snapshot_download(
+        repo_id=checkpoint_id,
+        revision=checkpoint_revision,
     )
+
+    wrapper_path = upstream / config["model"]["fev_wrapper_path"]
+    wrapper_module = _load_wrapper_module(wrapper_path)
+    model = wrapper_module.TimesFM3Model(
+        checkpoint_path=checkpoint_path,
+        min_batch=config["model"]["min_batch"],
+        max_batch=config["model"]["max_batch"],
+        per_core_batch_size=config["model"]["per_core_batch_size"],
+        max_context_length=config["model"]["max_context_length"],
+        device=config["model"]["device"],
+    )
+    load_start = time.monotonic()
+    model._get_forecaster()
     model_load_seconds = time.monotonic() - load_start
 
     variants: dict[str, dict[str, Any]] = {}
     for variant, task in tasks.items():
-        predictions, inference_time = pipeline.predict_fev(
-            task,
-            batch_size=config["model"]["batch_size"],
-            cross_learning=config["model"]["cross_learning"],
-            as_univariate=config["model"]["as_univariate"],
-        )
+        predictions = model.fit_predict(task)
         summary = task.evaluation_summary(
             predictions,
-            model_name=f"chronos-2-{variant}",
+            model_name=f"timesfm-3-{variant}",
             training_time_s=0.0,
-            inference_time_s=inference_time,
+            inference_time_s=model.inference_time,
             trained_on_this_dataset=False,
         )
         variants[variant] = {
             "metrics": select_finite_metrics(summary),
-            "inference_time_seconds": float(inference_time),
+            "inference_time_seconds": float(model.inference_time),
             "num_forecasts": int(summary["num_forecasts"]),
             "prediction_window_count": len(predictions),
         }
@@ -129,8 +154,6 @@ def run_chronos2_smoke(
     all_sql = variants["all_dynamic"]["metrics"]["SQL"]
     diagnostic_gain = float(relative_gain([target_sql], [all_sql])[0])
 
-    model = getattr(pipeline, "model", None)
-    model_config = getattr(model, "config", None)
     manifest: dict[str, Any] = {
         "experiment": config["experiment"],
         "schema_version": config["schema_version"],
@@ -147,10 +170,12 @@ def run_chronos2_smoke(
             "horizon": config["dataset"]["horizon"],
         },
         "model": {
-            "checkpoint": config["model"]["checkpoint"],
-            "checkpoint_revision": getattr(model_config, "_commit_hash", None),
+            "checkpoint": checkpoint_id,
+            "checkpoint_revision": checkpoint_revision,
             "model_load_seconds": model_load_seconds,
-            "torch_dtype": config["model"]["torch_dtype"],
+            "source_commit": config["model"]["source_commit"],
+            "fev_wrapper_commit": config["model"]["fev_wrapper_commit"],
+            "license": config["model"]["license"],
         },
         "runtime": {
             "python": platform.python_version(),
@@ -159,7 +184,7 @@ def run_chronos2_smoke(
             "cuda": torch.version.cuda,
             "gpu": torch.cuda.get_device_name(0),
             "fev": package_version("fev"),
-            "chronos_forecasting": package_version("chronos-forecasting"),
+            "timesfm": package_version("timesfm"),
         },
         "variants": variants,
         "diagnostic_relative_sql_gain_all_minus_target_only": diagnostic_gain,
@@ -170,7 +195,7 @@ def run_chronos2_smoke(
     destination = (
         Path(output_path)
         if output_path is not None
-        else root / "outputs/smoke/chronos2_epf_np.json"
+        else root / "outputs/smoke/timesfm3_epf_np.json"
     )
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(

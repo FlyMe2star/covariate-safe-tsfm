@@ -1,5 +1,6 @@
 claim_id,claim,status,required_evidence,planned_analysis,artifact
 C0,FEV task schemas and temporal boundaries are leakage-safe,verified,Dataset fingerprints plus first/last window column audits,Exact schema and chronological partition checks,evidence/smoke/p0_data_audit_summary.yaml
+S1,Chronos-2 native covariate and target-only FEV paths execute correctly,verified_smoke,One calibration-origin smoke with finite metrics,Implementation validation only; excluded from scientific claims,evidence/smoke/chronos2_epf_np_summary.yaml
 C1,All-covariate inference harms a nontrivial fraction of series-origins,planned,Paired per-series-origin SQL for target-only and all-covariate inference,Harm-rate estimate with paired bootstrap CI,outputs/p0/paired_losses.parquet
 C2,Useful covariate subsets exist beyond target-only and all-covariate policies,planned,Losses for every predeclared candidate policy at identical origins,Finite-oracle headroom with bootstrap CI,outputs/p0/oracle_headroom.json
 C3,Historical covariate utility predicts future utility sign,planned,Temporally separated calibration features and evaluation utility labels,AUROC plus reliability and coverage curves,outputs/p0/predictability.json

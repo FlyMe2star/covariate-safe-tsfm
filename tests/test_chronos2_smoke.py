@@ -1,6 +1,6 @@
 import pytest
 
-from covsafe.chronos2_smoke import make_task_fields, select_finite_metrics
+from covsafe.fev_smoke import make_task_fields, select_finite_metrics
 
 
 @pytest.fixture
