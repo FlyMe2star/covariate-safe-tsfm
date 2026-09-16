@@ -1,0 +1,98 @@
+schema_version: 1
+experiment: covariate-harm-p0a-v1
+status: screening_only
+parent_p0_config_hash: b2ace898d038
+seed: 42
+
+scope:
+  hypothesis: >-
+    All-dynamic zero-shot inference causes at least a 5% relative SQL loss on
+    a nontrivial fraction of calibration series-origin units.
+  variants: [target_only, all_dynamic]
+  calibration_origins_only: true
+  sealed_evaluation_origins_instantiated: false
+  candidate_subset_search_enabled: false
+  oracle_headroom_computed: false
+  utility_predictability_computed: false
+
+backbones:
+  chronos_2:
+    checkpoint: amazon/chronos-2
+    checkpoint_revision: 29ec3766d36d6f73f0696f85560a422f50e8498c
+    package: chronos-forecasting==2.2.2
+    device: cuda
+    torch_dtype: float32
+    batch_size: 16
+    cross_learning: true
+    as_univariate: false
+  timesfm_3:
+    checkpoint: google/timesfm-3.0-pytorch
+    checkpoint_revision: 43046b85ec22d584a13f8098c2ed39c889e129c2
+    source_commit: 20191171b74f51bfead932b6b8d0c8f515e70f63
+    fev_wrapper_commit: 38007871dcf6dc6b04aed3a54d9cd86678d48d0b
+    fev_wrapper_path: models/timesfm-3/model.py
+    device: cuda
+    min_batch: 4
+    max_batch: 16
+    per_core_batch_size: 8
+    max_context_length: 15360
+    license: timesfm-non-commercial-license-v1.0
+
+tasks:
+  epf_np:
+    expected_fingerprint: 9830dda233defc6c
+    expected_item_count: 1
+    calibration_origin_indices: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+  rohlik_orders_1D:
+    expected_fingerprint: d4ccf61e0ac3ccdf
+    expected_item_count: 7
+    calibration_origin_indices: [0, 1, 2]
+  rossmann_1D:
+    expected_fingerprint: 83a79b0a9a999f56
+    expected_item_count: 1115
+    calibration_origin_indices: [0, 1, 2, 3, 4, 5]
+  solar_with_weather_1H:
+    expected_fingerprint: 12eed0644b253066
+    expected_item_count: 1
+    calibration_origin_indices: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+
+metrics:
+  primary: SQL
+  secondary: [WQL, MASE, WAPE]
+  quantile_levels: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+  epsilon: 1.0e-12
+
+harm_definition:
+  relative_gain: (target_only_sql - all_dynamic_sql) / max(abs(target_only_sql), epsilon)
+  harmful_relative_loss: 0.05
+  finite_pair_policy: exclude_pair_if_either_sql_is_nonfinite
+
+aggregation:
+  evaluation_unit: [task, item, target, origin]
+  primary: task_macro_harm_rate
+  task_macro_harm_rate: equal_weight_mean_of_four_per_task_harm_rates
+  secondary: unit_micro_harm_rate
+  rationale: >-
+    Equal task weighting prevents the 1115-series Rossmann task from swamping
+    the three smaller tasks. The unit-micro estimate is retained for transparency.
+
+gate:
+  minimum_task_macro_harm_rate_per_backbone: 0.20
+  minimum_backbones_passing: 2
+  next_if_pass: expand_the_frozen_finite_candidate_set_on_calibration_origins
+  next_if_fail: stop_or_reframe_without_accessing_sealed_evaluation_origins
+
+execution:
+  require_cuda: true
+  recommended_accelerator: A100
+  resume_unit: [backbone, task, variant]
+  artifact_format: csv_plus_json_sidecar
+  atomic_writes: true
+  required_metadata:
+    - git_commit
+    - scientific_code_sha256
+    - config_hash
+    - parent_p0_config_hash
+    - dataset_fingerprint
+    - checkpoint_revision
+    - runtime

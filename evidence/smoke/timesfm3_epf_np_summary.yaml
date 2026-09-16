@@ -1,0 +1,56 @@
+schema_version: 1
+experiment: timesfm3-epf-np-input-strategy-smoke-v1
+result_status: verified_smoke_prerequisite
+source_manifest_status: smoke_only
+config_hash: 56041b1ae960
+parent_p0_config_hash: b2ace898d038
+git_commit: 8e1940b9050d164ffe19da883a78a8ca657ab20b
+created_at_utc: 2026-09-16T11:54:03.898454+00:00
+scientific_gate_computed: false
+sealed_evaluation_origins_instantiated: false
+dataset:
+  dataset_config: epf_np
+  dataset_fingerprint: 9830dda233defc6c
+  calibration_origin_index: 0
+  cutoff: -480
+  horizon: 24
+model:
+  checkpoint: google/timesfm-3.0-pytorch
+  checkpoint_revision: 43046b85ec22d584a13f8098c2ed39c889e129c2
+  model_load_seconds: 3.5160929269999883
+  source_commit: 20191171b74f51bfead932b6b8d0c8f515e70f63
+  fev_wrapper_commit: 38007871dcf6dc6b04aed3a54d9cd86678d48d0b
+  license: timesfm-non-commercial-license-v1.0
+runtime:
+  python: 3.13.15
+  platform: Linux-6.6.122+-x86_64-with-glibc2.39
+  torch: 2.11.0+cu128
+  cuda: "12.8"
+  gpu: Tesla T4
+  fev: 0.11.0.dev0
+  timesfm: 2.0.2
+variants:
+  target_only:
+    SQL: 1.11603420231108
+    WQL: 0.05386819249524109
+    MASE: 1.451556723026681
+    WAPE: 0.07006302926186433
+    inference_time_seconds: 1.9535086519999822
+    num_forecasts: 1
+  all_dynamic:
+    SQL: 2.440740528136649
+    WQL: 0.11780846888772462
+    MASE: 3.1981534935399023
+    WAPE: 0.15436690709171902
+    inference_time_seconds: 1.6132342340000037
+    num_forecasts: 1
+diagnostic_relative_sql_gain_all_minus_target_only: -1.1869764592181595
+interpretation:
+  pipeline_valid: true
+  input_strategies_distinguishable: true
+  scientific_evidence: false
+  latency_comparison_valid: false
+  note: >-
+    The all-dynamic SQL is 118.70% worse at one calibration origin. This is a
+    smoke diagnostic only; order and warm-up confound latency, and no P0 gate
+    may be computed from this artifact.

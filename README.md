@@ -59,7 +59,20 @@ After that audit passes, run the two matched T4 smoke notebooks:
 
 Each runs the same calibration origin through an official FEV path and writes a durable manifest to Google Drive.
 
-The TimesFM 3 adapter is the next implementation milestone. Model weights remain governed by their upstream licenses; in particular, TimesFM 3 weights are not covered by this repository's code license.
+Both smoke prerequisites are now verified. The next falsification stage is the
+calibration-only P0a harm screen. Run these notebooks in order, preferably on an A100
+or H100 (T4 remains valid but slower):
+
+1. [`notebooks/03_chronos2_p0a.ipynb`](notebooks/03_chronos2_p0a.ipynb)
+2. [`notebooks/04_timesfm3_p0a.ipynb`](notebooks/04_timesfm3_p0a.ipynb)
+
+P0a has frozen configuration hash `902c15e63f71`. It writes each task-variant unit
+directly to Google Drive and safely resumes after disconnects. The exact aggregation
+clarification is recorded in
+[`notes/design/p0a-harm-screen-contract.md`](notes/design/p0a-harm-screen-contract.md).
+
+Model weights remain governed by their upstream licenses; in particular, TimesFM 3
+weights are not covered by this repository's code license.
 
 ## Reproducibility rule
 
