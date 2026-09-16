@@ -1,0 +1,7 @@
+claim_id,claim,status,required_evidence,planned_analysis,artifact
+C1,All-covariate inference harms a nontrivial fraction of series-origins,planned,Paired per-series-origin SQL for target-only and all-covariate inference,Harm-rate estimate with paired bootstrap CI,outputs/p0/paired_losses.parquet
+C2,Useful covariate subsets exist beyond target-only and all-covariate policies,planned,Losses for every predeclared candidate policy at identical origins,Finite-oracle headroom with bootstrap CI,outputs/p0/oracle_headroom.json
+C3,Historical covariate utility predicts future utility sign,planned,Temporally separated calibration features and evaluation utility labels,AUROC plus reliability and coverage curves,outputs/p0/predictability.json
+C4,A reliability gate improves risk-coverage tradeoffs,planned,Sealed evaluation predictions from fixed selector and constant policies,Paired SQL WQL MASE and selective-risk curves,outputs/main/gating_results.parquet
+C5,Behavior transfers across native covariate-aware TSFMs,planned,Matched Chronos-2 and TimesFM-3 runs,Per-backbone estimates plus interaction analysis,outputs/main/cross_backbone.json
+C6,The method avoids overclaiming under shift,planned,Domain and temporal subgroup results,Failure taxonomy and worst-group analysis,outputs/main/failure_analysis.json

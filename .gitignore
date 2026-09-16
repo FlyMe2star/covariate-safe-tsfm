@@ -1,0 +1,28 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+build/
+dist/
+*.egg-info/
+
+# Generated or licensed artifacts
+data/
+artifacts/
+checkpoints/
+outputs/
+private_manifests/
+*.parquet
+*.npz
+*.pt
+*.pth
+*.safetensors
+
+# Local credentials and editor state
+.env
+.env.*
+!.env.example
+.vscode/
+.idea/

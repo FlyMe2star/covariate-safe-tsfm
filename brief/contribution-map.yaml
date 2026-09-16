@@ -1,0 +1,41 @@
+project: covariate-safe-tsfm
+working_title: "When Extra Variables Hurt: Reliability-Gated Covariate Selection for Zero-Shot Time-Series Foundation Models"
+status: planned
+core_question: >-
+  Can historical forecast utility predict whether native covariate conditioning will improve
+  a frozen zero-shot TSFM at a future forecast origin?
+hypotheses:
+  H1:
+    statement: Adding all available covariates causes practically meaningful harm for a nontrivial fraction of series-origins.
+    p0_gate: harm_rate_gt_5pct >= 0.20
+    required_backbones: [chronos_2, timesfm_3]
+  H2:
+    statement: A finite predeclared covariate-policy set contains useful headroom beyond target-only and all-covariate inference.
+    p0_gate: mean_oracle_headroom >= 0.05
+    required_backbones: [chronos_2, timesfm_3]
+  H3:
+    statement: Historical utility predicts the sign of future covariate utility above a practically useful threshold.
+    p0_gate: utility_sign_auroc >= 0.65
+    required_backbones: [chronos_2, timesfm_3]
+candidate_method:
+  name: historical-utility reliability gate
+  training: none for the frozen forecasting backbone
+  inputs: historical rolling-origin losses and availability metadata
+  actions:
+    - target_only
+    - all_covariates
+    - best_single_known_future
+    - leave_one_out
+    - correlation_top_k
+  abstention: fall back to target_only when estimated benefit is below a calibrated margin
+evidence_boundaries:
+  calibration: earlier rolling origins only
+  evaluation: later sealed rolling origins
+  forbidden:
+    - evaluation-label-driven feature selection
+    - tuning on official final-test outcomes
+    - treating past-only covariates as known in the forecast horizon
+kill_conditions:
+  - Any of H1-H3 fails on either backbone in P0.
+  - Apparent gains disappear under a target-only/all-covariate matched-compute comparison.
+  - The selector cannot beat a constant global policy with paired uncertainty estimates.

@@ -1,0 +1,80 @@
+schema_version: 1
+experiment: covariate-utility-p0-v1
+status: screening_only
+seed: 42
+
+backbones:
+  chronos_2:
+    checkpoint: amazon/chronos-2
+    frozen: true
+    zero_shot: true
+  timesfm_3:
+    checkpoint: google/timesfm-3.0-pytorch
+    frozen: true
+    zero_shot: true
+
+data:
+  dataset_path: autogluon/fev_datasets
+  benchmark_source: https://github.com/autogluon/fev/blob/38007871dcf6dc6b04aed3a54d9cd86678d48d0b/benchmarks/fev_bench/tasks_mini.yaml
+  calibration_fraction: 0.60
+  minimum_origins_per_partition: 2
+  static_columns_enabled: false
+  tasks:
+    - dataset_config: epf_np
+      horizon: 24
+      num_windows: 20
+      seasonality: 24
+      target: null
+      known_dynamic_columns: [Grid load forecast, Wind power forecast]
+      past_dynamic_columns: []
+    - dataset_config: rohlik_orders_1D
+      horizon: 61
+      num_windows: 5
+      seasonality: 7
+      initial_cutoff: "2023-05-01"
+      target: orders
+      known_dynamic_columns: [holiday, shops_closed, winter_school_holidays, school_holidays]
+      past_dynamic_columns: [shutdown, mini_shutdown, blackout, mov_change, frankfurt_shutdown, precipitation, snow, user_activity_1, user_activity_2]
+    - dataset_config: rossmann_1D
+      horizon: 48
+      num_windows: 10
+      seasonality: 7
+      target: Sales
+      known_dynamic_columns: [SchoolHoliday, Promo, DayOfWeek, Open, StateHoliday]
+      past_dynamic_columns: [Customers]
+    - dataset_config: solar_with_weather_1H
+      horizon: 24
+      num_windows: 20
+      seasonality: 24
+      target: null
+      known_dynamic_columns: [wind_speed, day_length, humidity, rain_1h, snow_1h, temp, pressure]
+      past_dynamic_columns: [global_horizontal_irradiance, clouds_all]
+
+candidate_policies:
+  fixed: [target_only, all_dynamic]
+  enumerate_single_known_future: true
+  enumerate_leave_one_out: true
+  historical_correlation_top_k: [1, 2, 4]
+  deduplicate_equivalent_policies: true
+
+historical_utility:
+  half_life_origins: 3
+  positive_utility_threshold: 0.0
+  fallback_policy: target_only
+
+metrics:
+  primary: SQL
+  secondary: [WQL, MASE]
+  epsilon: 1.0e-12
+
+gates:
+  harmful_relative_loss: 0.05
+  minimum_harm_rate: 0.20
+  minimum_mean_oracle_headroom: 0.05
+  minimum_utility_sign_auroc: 0.65
+  minimum_backbones_passing: 2
+
+artifact_policy:
+  required_metadata: [git_commit, config_sha256, dataset_fingerprint, checkpoint_revision, runtime]
+  allowed_statuses: [smoke_only, screening_only, paper_eligible]
+  official_final_test_instantiated: false
