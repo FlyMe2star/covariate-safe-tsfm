@@ -52,7 +52,9 @@ python scripts/hash_config.py configs/diagnostic/covariate_utility_p0.yaml
 
 Open [`notebooks/00_p0_data_audit.ipynb`](notebooks/00_p0_data_audit.ipynb) in Colab and use a CPU runtime. The notebook installs the FEV source at the pinned upstream commit, audits all four task schemas and temporal partitions, and emits `outputs/p0/p0_data_audit.json`. Send that final JSON back before the GPU adapters are run.
 
-GPU model adapters are the next implementation milestone. Model weights remain governed by their upstream licenses; in particular, TimesFM 3 weights are not covered by this repository's code license.
+After that audit passes, open [`notebooks/01_chronos2_smoke.ipynb`](notebooks/01_chronos2_smoke.ipynb) with a T4 GPU. It runs one calibration origin through the official Chronos-2/FEV path and writes a durable smoke manifest to Google Drive.
+
+The TimesFM 3 adapter is the next implementation milestone. Model weights remain governed by their upstream licenses; in particular, TimesFM 3 weights are not covered by this repository's code license.
 
 ## Reproducibility rule
 

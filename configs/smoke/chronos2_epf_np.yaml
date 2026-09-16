@@ -1,0 +1,40 @@
+schema_version: 1
+experiment: chronos2-epf-np-input-strategy-smoke-v1
+status: smoke_only
+parent_p0_config_hash: b2ace898d038
+
+dataset:
+  dataset_path: autogluon/fev_datasets
+  dataset_config: epf_np
+  expected_fingerprint: 9830dda233defc6c
+  horizon: 24
+  seasonality: 24
+  calibration_origin_index: 0
+  expected_cutoff: -480
+  target: null
+  known_dynamic_columns: [Grid load forecast, Wind power forecast]
+  past_dynamic_columns: []
+
+variants:
+  - target_only
+  - all_dynamic
+
+model:
+  checkpoint: amazon/chronos-2
+  package: chronos-forecasting==2.2.2
+  device: cuda
+  torch_dtype: float32
+  batch_size: 16
+  cross_learning: true
+  as_univariate: false
+
+metrics:
+  primary: SQL
+  secondary: [WQL, MASE, WAPE]
+  quantile_levels: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+
+guardrails:
+  require_cuda: true
+  calibration_origins_only: true
+  sealed_evaluation_origins_instantiated: false
+  scientific_gate_computed: false
