@@ -48,7 +48,11 @@ pytest
 python scripts/hash_config.py configs/diagnostic/covariate_utility_p0.yaml
 ```
 
-GPU model adapters and a Colab smoke notebook are the next implementation milestone. Model weights remain governed by their upstream licenses; in particular, TimesFM 3 weights are not covered by this repository's code license.
+## First run
+
+Open [`notebooks/00_p0_data_audit.ipynb`](notebooks/00_p0_data_audit.ipynb) in Colab and use a CPU runtime. The notebook installs the FEV source at the pinned upstream commit, audits all four task schemas and temporal partitions, and emits `outputs/p0/p0_data_audit.json`. Send that final JSON back before the GPU adapters are run.
+
+GPU model adapters are the next implementation milestone. Model weights remain governed by their upstream licenses; in particular, TimesFM 3 weights are not covered by this repository's code license.
 
 ## Reproducibility rule
 

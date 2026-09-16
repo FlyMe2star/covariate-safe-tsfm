@@ -11,15 +11,18 @@ from covsafe.diagnostics import (
     harm_rate,
     relative_gain,
 )
+from covsafe.protocol import OriginPartition, temporal_origin_partition
 
 __all__ = [
     "GateReport",
     "GateThresholds",
     "ModelEvidence",
+    "OriginPartition",
     "binary_auroc",
     "canonical_config_hash",
     "evaluate_p0_gates",
     "finite_oracle_headroom",
     "harm_rate",
     "relative_gain",
+    "temporal_origin_partition",
 ]
