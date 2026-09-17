@@ -1,5 +1,10 @@
 # Topic brief
 
+Target: CCF B-class empirical ML/data-mining conference; exact venue will be
+selected after P1b paper-eligible evidence is available.
+
+Assumed length: 8–10 pages of main text, excluding references and appendix.
+
 ## Problem
 
 New time-series foundation models can consume multiple target variables and past/future covariates natively. In practice, users still lack an evidence-based answer to a prior question: **which available variables should be supplied for a particular target and forecast origin?** More information is not guaranteed to help because covariate relevance, lag, noise, and distribution shift vary by series and time.

@@ -1,0 +1,103 @@
+schema_version: 1
+experiment: applicability-gated-router-p1b-v1
+status: proposed_pending_owner_approval
+prerequisite_p1a_config_hash: 6fe503a9d399
+prerequisite_p1a_decision: evidence/screening/p1a_applicability_decision.yaml
+seed: 42
+
+scope:
+  frozen_zero_shot_backbones: [chronos_2, timesfm_3]
+  tasks: [epf_np, rohlik_orders_1D, rossmann_1D, solar_with_weather_1H]
+  calibration_origins_only_for_method_construction: true
+  sealed_evaluation_origins_instantiated_before_freeze: false
+  update_router_with_sealed_outcomes: false
+  primary_metric: SQL
+
+applicability_map:
+  chronos_2:
+    epf_np: false
+    rohlik_orders_1D: false
+    rossmann_1D: true
+    solar_with_weather_1H: false
+  timesfm_3:
+    epf_np: false
+    rohlik_orders_1D: true
+    rossmann_1D: true
+    solar_with_weather_1H: true
+
+candidate_policies:
+  inherit_from_p0b_config_hash: bfd5bae251a5
+  dynamic_router_identity: evaluated_deduplicated_policy_id
+  dynamic_router_reexpand_aliases: false
+  constant_baseline_reexpand_deduplicated_aliases: true
+
+historical_utility_router:
+  comparator_policy: target_only
+  utility_formula: (target_only_sql - candidate_sql) / max(abs(target_only_sql), epsilon)
+  half_life_origins: 3
+  history: all_and_only_calibration_origins
+  minimum_prior_finite_observations: 1
+  target_only_score: 0.0
+  select: maximum_finite_score_strictly_greater_than_zero
+  tie_break: [target_only_first, candidate_generator_order]
+  no_positive_or_available_score: target_only
+  update_during_sealed_evaluation: false
+  epsilon: 1.0e-12
+
+constant_policy:
+  role: fallback_for_inapplicable_groups_and_strong_constant_baseline
+  candidates: all_logical_p0b_policy_ids_after_alias_reexpansion
+  require_complete_calibration_unit_coverage: true
+  selection_statistic: minimum_mean_per_unit_SQL_within_backbone_task
+  tie_break: candidate_generator_order
+  frozen_unit: [backbone, task]
+
+methods:
+  applicability_gated_router: >-
+    Use the historical-utility router only in P1a-eligible groups; otherwise use
+    the frozen calibration-best constant policy.
+  ungated_router: use_the_identical_historical_utility_router_in_all_eight_groups
+  binary_best_constant: calibration_best_of_target_only_and_all_dynamic_per_group
+  fullset_best_constant: constant_policy_defined_above
+  last_origin_winner: most_recent_calibration_utility_winner_with_target_only_default
+  finite_oracle: diagnostic_only_never_deployable
+
+decision_artifacts:
+  created_before_sealed_model_inference: true
+  include:
+    - applicability_map
+    - constant_policy_by_group
+    - series_policy_historical_scores
+    - deterministic_tie_break_order
+    - source_artifact_hashes
+  immutable_after_hash: true
+
+sealed_evaluation:
+  origin_partition: inherit_from_p0_config_hash_b2ace898d038
+  decision_join_key: [backbone, task, item_id, target, origin_index, policy_id]
+  evaluate_all_unique_candidate_policies: true
+  paper_status_after_integrity_checks: paper_eligible
+  model_revisions_and_task_schemas: unchanged_from_p0b
+
+aggregation:
+  evaluation_unit: [backbone, task, item_id, target, origin_index]
+  within_group: mean_paired_relative_SQL_gain
+  across_groups: equal_weight_mean_of_eight_group_means
+  bootstrap_unit_within_group: [item_id, target, origin_index]
+  bootstrap_replicates: 5000
+  confidence: one_sided_95pct_lower_bound
+  report_secondary: [WQL, MASE, WAPE, routing_coverage, fallback_frequency]
+
+fixed_sequence_success_gate:
+  step_1: applicability_gated_router_minus_fullset_best_constant_lower_bound_gt_0
+  step_2_if_step_1_passes: applicability_gated_router_minus_ungated_router_lower_bound_gt_0
+  per_backbone_safety: nonnegative_task_macro_point_gain_vs_fullset_best_constant
+  next_if_pass: paper_claim_may_be_upgraded_after_reproducibility_audit
+  next_if_fail: retain_bounded_negative_or_mixed_result_and_reassess_paper_viability
+
+forbidden:
+  - changing_the_applicability_map_after_sealed_results
+  - tuning_half_life_or_policy_set_on_sealed_results
+  - using_sealed_outcomes_to_update_later_sealed_decisions
+  - reporting_unit_micro_results_as_the_primary_aggregate
+  - treating_the_finite_oracle_as_a_deployable_baseline

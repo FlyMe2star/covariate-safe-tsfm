@@ -1,6 +1,6 @@
 # Outline contract
 
-Status: original story stopped; reframed story approved for P1a screening only
+Status: P1a passed; P1b method and evaluation design awaiting owner approval
 
 ## Provisional story
 
@@ -25,6 +25,15 @@ Status: original story stopped; reframed story approved for P1a screening only
 - Table 2: per-task/backbone transfer and worst-group results, including every fallback.
 - Appendix: task schemas, exact candidate policies, leakage audit, compute, licenses, and bootstrap details.
 
+## Citation and figure quotas
+
+- Introduction and problem framing: 6–8 verified citations.
+- Related work: 16–22 verified citations across TSFMs, covariate adaptation,
+  configuration selection, and selective prediction.
+- Method/evaluation motivation: 6–10 verified citations.
+- Target total: 30–40 verified references, one method diagram, at least two result
+  figures, and at least two main result tables.
+
 ## Drafting rule
 
 No abstract, claimed contribution, or result paragraph is written in factual tense until its evidence row is `verified`. Failed P0 gates trigger a stop/reframe decision instead of a weaker retrospective threshold.
@@ -38,3 +47,13 @@ The original outline is therefore inactive, and sealed evaluation origins remain
 unopened. The replacement story above is authorized only for the CPU-only P1a
 confidence audit. A P1a pass still does not authorize sealed access: the router,
 fallback, baselines, estimands, and multiplicity plan require a subsequent freeze.
+
+## P1a outcome and proposed P1b evidence
+
+P1a certifies four groups: Chronos-2/Rossmann and TimesFM 3/Rohlik, Rossmann,
+and Solar. All other groups must use the frozen constant fallback. The proposed P1b
+contract uses two fixed-sequence comparisons: first against the full-candidate
+calibration-best constant, then—only after passage—against the ungated version of the
+same historical-utility router. Group means receive equal weight; unit-micro results
+are secondary. The design is documented in `notes/design/` and remains unexecuted
+until owner approval.

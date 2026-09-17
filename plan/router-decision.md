@@ -1,7 +1,7 @@
 # Router decision
 
-Route: **empirical ML paper**  
-Status: empirical route retained; P1a reframe accepted, sealed evaluation blocked
+Route to **empirical-paper-writer** for an empirical ML paper.
+Status: empirical route retained; P1a passed; P1b design awaiting owner approval
 
 The project makes testable claims about model behavior and a deployable input-policy
 rule. A review-paper route would not answer the central question. The original P0
@@ -13,8 +13,9 @@ new heterogeneous-applicability hypothesis undergoes P1a screening.
 1. **P0 falsification** — frozen zero-shot inference, finite oracle headroom, historical-utility predictability.
 2. **P1a applicability audit** — calibration-only clustered confidence intervals under
    the new frozen contract; no model inference and no sealed access.
-3. **P1b method freeze** — only if P1a passes; specify the dynamic router, constant
-   fallback, baselines, uncertainty, and multiplicity controls.
+3. **P1b method freeze** — P1a passed; proposed dynamic router, full-set constant
+   fallback, fixed-sequence comparisons, uncertainty, and safety rules now require
+   owner approval before hashing.
 4. **P2 paper-eligible evaluation** — untouched later origins or held-out tasks, paired uncertainty, ablations, efficiency.
 5. **P3 manuscript** — backfill only verified artifacts into the evidence matrix.
 

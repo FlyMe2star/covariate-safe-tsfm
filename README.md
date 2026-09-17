@@ -115,6 +115,14 @@ score table, performs no model inference, and keeps sealed origins closed:
 Frozen P1a configuration hash: `6fe503a9d399`. Use a CPU runtime. A P1a pass authorizes
 only a subsequent router-freeze contract—not sealed evaluation by itself.
 
+P1a passed with four eligible groups: Chronos-2/Rossmann and TimesFM 3/Rohlik,
+Rossmann, and Solar. The exact screening decision is archived in
+[`evidence/screening/p1a_applicability_decision.yaml`](evidence/screening/p1a_applicability_decision.yaml).
+The P1b router and evaluation design is now proposed in
+[`notes/design/p1b-router-freeze-proposal.md`](notes/design/p1b-router-freeze-proposal.md)
+and is intentionally not frozen or executable until owner approval. Sealed origins
+remain unopened.
+
 Model weights remain governed by their upstream licenses; in particular, TimesFM 3
 weights are not covered by this repository's code license.
 

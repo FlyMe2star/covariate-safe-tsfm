@@ -1,10 +1,37 @@
 project: covariate-safe-tsfm
 working_title: "When Covariate Routing Is Trustworthy: Applicability-Gated Input Selection for Zero-Shot Time-Series Foundation Models"
-status: reframed_p1a_applicability_confidence_audit_pending
+status: p1a_passed_p1b_design_pending_owner_approval
 core_question: >-
   Can calibration-only historical utility certify the task-backbone groups in which
   dynamic covariate-policy routing is reliable, while safely falling back to a constant
   policy elsewhere?
+primary_claim:
+  id: C8
+  statement: >-
+    A calibration-certified applicability gate can improve sealed-origin covariate-policy
+    routing over a strong calibration-best constant policy without changing frozen TSFM
+    weights.
+  status: planned_pending_p1b_owner_approval
+secondary_claims:
+  - id: C9
+    statement: >-
+      Applicability gating improves the same historical-utility router relative to
+      applying it indiscriminately in all task-backbone groups.
+    status: planned_pending_p1b_owner_approval
+  - id: C10
+    statement: >-
+      Constant-policy fallback limits worst-group downside while the system continues
+      to issue every forecast.
+    status: planned_pending_p1b_owner_approval
+risk_factors:
+  - Only four of eight task-backbone groups are certified and Chronos-2 coverage is Rossmann-only.
+  - The TimesFM-3 solar confidence lower bound is only slightly above chance.
+  - The frozen router may fail to beat the strong full-candidate constant on sealed origins.
+  - Recent configuration-selection and adapter work creates medium-high novelty pressure.
+likely_reviewer_objections:
+  - The applicability map may be dataset-specific rather than transferable.
+  - Selecting applicability and fallback on the same calibration partition may overfit.
+  - Exhaustive policy evaluation costs more than deployed one-policy inference.
 hypotheses:
   H1:
     statement: Adding all available covariates causes practically meaningful harm for a nontrivial fraction of series-origins.
@@ -64,19 +91,30 @@ reframed_hypotheses:
     p1a_gate: >-
       point AUROC >= 0.60 and one-sided 95% lower bound > 0.50 for at least three
       groups, with at least one eligible task per backbone
-    evidence_status: pending_screening
+    evidence_status: verified_screening_not_paper_evidence
   H5:
     statement: >-
       On sealed origins, applicability-gated routing improves paired loss over both
       the ungated router and a calibration-selected constant policy.
-    evidence_status: blocked_pending_p1a_and_router_freeze
+    evidence_status: planned_pending_p1b_owner_approval_and_freeze
   H6:
     statement: >-
       Abstaining from dynamic routing in uncertified groups reduces worst-group
       downside without abstaining from forecasting.
-    evidence_status: blocked_pending_p1a_and_router_freeze
+    evidence_status: planned_pending_p1b_owner_approval_and_freeze
 non_goals:
   - universal covariate selection
   - causal variable discovery
   - arbitration among different forecasting backbones
   - abstention from producing a forecast
+p1a_outcome:
+  config_hash: 6fe503a9d399
+  eligible_groups_total: 4
+  eligible_groups:
+    - [chronos_2, rossmann_1D]
+    - [timesfm_3, rohlik_orders_1D]
+    - [timesfm_3, rossmann_1D]
+    - [timesfm_3, solar_with_weather_1H]
+  gate_passed: true
+  sealed_evaluation_origins_instantiated: false
+  decision: prepare_p1b_contract_then_require_owner_approval

@@ -1,0 +1,50 @@
+schema_version: 1
+decision: p1a-task-backbone-applicability-confidence-gate
+result_status: verified_screening_decision
+config_hash: 6fe503a9d399
+git_commit: b79b5dc01f3637091e6b459a052747cc8db141d6
+scientific_code_sha256: 4304ca955b6844956db9d0851d347d6a41f7ad35a9ef41656acced56b61398ba
+prerequisite_p0c_config_hash: 00293b538504
+scope:
+  calibration_origins_only: true
+  sealed_evaluation_origins_instantiated: false
+  model_inference_performed: false
+thresholds:
+  point_auroc_at_least: 0.60
+  one_sided_95pct_lower_bound_strictly_greater_than: 0.50
+  bootstrap_replicates: 2000
+  resampling_unit: [item_id, target, origin_index]
+groups:
+  chronos_2:
+    epf_np: {point_auroc: 0.49130434782608695, lower_bound: 0.35185185185185186, eligible: false}
+    rohlik_orders_1D: {point_auroc: 0.48208444275389883, lower_bound: 0.31008122193851634, eligible: false}
+    rossmann_1D: {point_auroc: 0.7944165216514648, lower_bound: 0.789547152334413, eligible: true}
+    solar_with_weather_1H: {point_auroc: 0.426875, lower_bound: 0.2965056592695899, eligible: false}
+  timesfm_3:
+    epf_np: {point_auroc: 0.5702479338842975, lower_bound: 0.43199382716049384, eligible: false}
+    rohlik_orders_1D: {point_auroc: 0.8802710843373494, lower_bound: 0.7410255464192845, eligible: true}
+    rossmann_1D: {point_auroc: 0.8579835667558832, lower_bound: 0.8543372116389081, eligible: true}
+    solar_with_weather_1H: {point_auroc: 0.6600653327888935, lower_bound: 0.5022684945259749, eligible: true}
+gate:
+  eligible_groups_total: 4
+  minimum_eligible_groups_total: 3
+  eligible_tasks_by_backbone:
+    chronos_2: [rossmann_1D]
+    timesfm_3: [rohlik_orders_1D, rossmann_1D, solar_with_weather_1H]
+  minimum_eligible_tasks_per_backbone: 1
+  minimum_eligible_groups_total_passed: true
+  minimum_eligible_tasks_per_backbone_passed: true
+  passed: true
+decision_outcome:
+  action: prepare_and_owner_approve_p1b_router_freeze
+  sealed_evaluation_authorized: false
+  paper_claim_upgraded: false
+private_report:
+  path: /content/drive/MyDrive/covariate-safe-tsfm/private_manifests/p1a/reports/p1a_applicability_audit.json
+  verification_required_before_p1b_execution: true
+limitations:
+  - Applicability is explicitly local to the observed task-backbone groups.
+  - Chronos-2 is certified only on rossmann_1D.
+  - The TimesFM-3 solar lower bound is 0.5022684945 and must be reported as borderline.
+  - Rossmann has far more units than the other tasks; final aggregation must equal-weight groups.
+  - This calibration-only screen is not paper-eligible evidence.
