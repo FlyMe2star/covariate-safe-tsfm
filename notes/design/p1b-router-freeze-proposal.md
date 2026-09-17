@@ -1,6 +1,9 @@
-# P1b router-freeze proposal
+# P1b router-freeze contract
 
-Status: **proposed; awaiting owner approval before hashing or sealed access**
+Status: **owner-approved on 2026-09-17; frozen before router-state construction
+and sealed access**
+
+Canonical P1b configuration hash: `2b8b8284ae21`.
 
 ## Method
 
@@ -48,8 +51,12 @@ point gain versus the full-set constant.
 
 ## Execution boundary
 
-After owner approval, the proposed YAML is renamed/frozen, hashed, and used by a
+The approved YAML is renamed/frozen, hashed, and used by a
 CPU-only notebook to construct and hash the router state from P0b/P1a artifacts. Only
 after that state passes review may separate GPU notebooks instantiate the sealed
 origins. No sealed result can change the applicability map, policy set, half-life,
 fallback, comparisons, or aggregation.
+
+Execution order is fixed as notebooks 09 (CPU state), 10 and 11 (sealed backbone
+evaluation), then 12 (CPU fixed-sequence analysis). Each stage is reviewed before the
+next stage is authorized.

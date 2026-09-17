@@ -1,6 +1,8 @@
 schema_version: 1
 experiment: applicability-gated-router-p1b-v1
-status: proposed_pending_owner_approval
+status: frozen_before_router_state_and_sealed_evaluation
+owner_approval: APPROVE_P1B
+owner_approval_date: "2026-09-17"
 prerequisite_p1a_config_hash: 6fe503a9d399
 prerequisite_p1a_decision: evidence/screening/p1a_applicability_decision.yaml
 seed: 42
@@ -48,6 +50,7 @@ constant_policy:
   role: fallback_for_inapplicable_groups_and_strong_constant_baseline
   candidates: all_logical_p0b_policy_ids_after_alias_reexpansion
   require_complete_calibration_unit_coverage: true
+  require_all_calibration_sql_finite: true
   selection_statistic: minimum_mean_per_unit_SQL_within_backbone_task
   tie_break: candidate_generator_order
   frozen_unit: [backbone, task]
@@ -78,6 +81,7 @@ sealed_evaluation:
   evaluate_all_unique_candidate_policies: true
   paper_status_after_integrity_checks: paper_eligible
   model_revisions_and_task_schemas: unchanged_from_p0b
+  nonfinite_selected_primary_metric: protocol_failure_stop_without_exclusion
 
 aggregation:
   evaluation_unit: [backbone, task, item_id, target, origin_index]

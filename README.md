@@ -9,10 +9,11 @@ Working paper title:
 ## Status
 
 The original universal cross-backbone direction **stopped at the P0c diagnostic
-gate**. It has not been rescued by lowering its threshold. A narrower
-task–backbone-applicability hypothesis is now authorized for calibration-only P1a
-screening. No paper-level result is claimed. The original question was deliberately
-falsifiable:
+gate**. It was not rescued by lowering its threshold. A narrower
+task–backbone-applicability hypothesis passed its calibration-only P1a screen, and
+the owner-approved P1b router is now frozen and implemented. Sealed evaluation has
+not started, so no P1b paper-level result is claimed. The original question was
+deliberately falsifiable:
 
 > Across native covariate-aware TSFMs, do extra covariates harm a meaningful fraction of forecasts, and can strictly historical evidence predict when to include them?
 
@@ -36,6 +37,8 @@ Frozen P0 configuration hash: `b2ace898d038`.
 ```text
 brief/                 research and evidence contracts
 configs/diagnostic/    frozen experiment configuration
+configs/evaluation/    frozen paper-eligible evaluation configuration
+issues/                evidence-aware experiment and QA task ledger
 notes/design/          protocol, leakage rules, and decisions
 notes/innovation/      novelty search and candidate triage
 plan/                  empirical-paper route and outline contract
@@ -118,10 +121,19 @@ only a subsequent router-freeze contract—not sealed evaluation by itself.
 P1a passed with four eligible groups: Chronos-2/Rossmann and TimesFM 3/Rohlik,
 Rossmann, and Solar. The exact screening decision is archived in
 [`evidence/screening/p1a_applicability_decision.yaml`](evidence/screening/p1a_applicability_decision.yaml).
-The P1b router and evaluation design is now proposed in
+The P1b router and evaluation design was owner-approved on 2026-09-17 and is frozen in
 [`notes/design/p1b-router-freeze-proposal.md`](notes/design/p1b-router-freeze-proposal.md)
-and is intentionally not frozen or executable until owner approval. Sealed origins
-remain unopened.
+and [`configs/evaluation/applicability_router_p1b.yaml`](configs/evaluation/applicability_router_p1b.yaml).
+Frozen P1b configuration hash: `2b8b8284ae21`.
+
+The next and only authorized run is the CPU prerequisite:
+
+1. [`notebooks/09_p1b_freeze_router_state.ipynb`](notebooks/09_p1b_freeze_router_state.ipynb)
+
+It reconstructs the router exclusively from calibration artifacts and writes an
+immutable state manifest. Send its compact JSON for review before running the A100-
+recommended sealed notebooks 10 and 11. Notebook 12 remains blocked until both
+backbone completion reports pass review.
 
 Model weights remain governed by their upstream licenses; in particular, TimesFM 3
 weights are not covered by this repository's code license.

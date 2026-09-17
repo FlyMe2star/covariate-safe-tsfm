@@ -1,6 +1,6 @@
 # Outline contract
 
-Status: P1a passed; P1b method and evaluation design awaiting owner approval
+Status: P1b method and evaluation design owner-approved and frozen
 
 ## Provisional story
 
@@ -43,17 +43,17 @@ No abstract, claimed contribution, or result paragraph is written in factual ten
 P0a and P0b passed, but P0c failed because Chronos-2 reached only 0.5487
 task-macro historical-utility sign AUROC versus the frozen 0.65 threshold.
 TimesFM 3 passed at 0.7421, leaving only one of the two required backbones.
-The original outline is therefore inactive, and sealed evaluation origins remain
-unopened. The replacement story above is authorized only for the CPU-only P1a
-confidence audit. A P1a pass still does not authorize sealed access: the router,
-fallback, baselines, estimands, and multiplicity plan require a subsequent freeze.
+The original outline is therefore inactive. Its replacement proceeded through the
+CPU-only P1a confidence audit, while sealed origins remained unopened; the resulting
+router, fallback, baselines, estimands, and multiplicity plan are now frozen in P1b.
 
-## P1a outcome and proposed P1b evidence
+## P1a outcome and frozen P1b evidence
 
 P1a certifies four groups: Chronos-2/Rossmann and TimesFM 3/Rohlik, Rossmann,
-and Solar. All other groups must use the frozen constant fallback. The proposed P1b
+and Solar. All other groups must use the frozen constant fallback. The frozen P1b
 contract uses two fixed-sequence comparisons: first against the full-candidate
 calibration-best constant, then—only after passage—against the ungated version of the
 same historical-utility router. Group means receive equal weight; unit-micro results
-are secondary. The design is documented in `notes/design/` and remains unexecuted
-until owner approval.
+are secondary. The design is documented in `notes/design/`, approved on 2026-09-17,
+and frozen before router-state construction or sealed access. The implementation is
+ready, while all P1b result claims remain planned until the sealed notebooks complete.

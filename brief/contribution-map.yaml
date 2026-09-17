@@ -1,6 +1,6 @@
 project: covariate-safe-tsfm
 working_title: "When Covariate Routing Is Trustworthy: Applicability-Gated Input Selection for Zero-Shot Time-Series Foundation Models"
-status: p1a_passed_p1b_design_pending_owner_approval
+status: p1b_implementation_ready_router_state_pending
 core_question: >-
   Can calibration-only historical utility certify the task-backbone groups in which
   dynamic covariate-policy routing is reliable, while safely falling back to a constant
@@ -11,18 +11,18 @@ primary_claim:
     A calibration-certified applicability gate can improve sealed-origin covariate-policy
     routing over a strong calibration-best constant policy without changing frozen TSFM
     weights.
-  status: planned_pending_p1b_owner_approval
+  status: planned_under_frozen_p1b_contract
 secondary_claims:
   - id: C9
     statement: >-
       Applicability gating improves the same historical-utility router relative to
       applying it indiscriminately in all task-backbone groups.
-    status: planned_pending_p1b_owner_approval
+    status: planned_under_frozen_p1b_contract
   - id: C10
     statement: >-
       Constant-policy fallback limits worst-group downside while the system continues
       to issue every forecast.
-    status: planned_pending_p1b_owner_approval
+    status: planned_under_frozen_p1b_contract
 risk_factors:
   - Only four of eight task-backbone groups are certified and Chronos-2 coverage is Rossmann-only.
   - The TimesFM-3 solar confidence lower bound is only slightly above chance.
@@ -96,12 +96,12 @@ reframed_hypotheses:
     statement: >-
       On sealed origins, applicability-gated routing improves paired loss over both
       the ungated router and a calibration-selected constant policy.
-    evidence_status: planned_pending_p1b_owner_approval_and_freeze
+    evidence_status: planned_under_frozen_p1b_contract
   H6:
     statement: >-
       Abstaining from dynamic routing in uncertified groups reduces worst-group
       downside without abstaining from forecasting.
-    evidence_status: planned_pending_p1b_owner_approval_and_freeze
+    evidence_status: planned_under_frozen_p1b_contract
 non_goals:
   - universal covariate selection
   - causal variable discovery
@@ -117,4 +117,4 @@ p1a_outcome:
     - [timesfm_3, solar_with_weather_1H]
   gate_passed: true
   sealed_evaluation_origins_instantiated: false
-  decision: prepare_p1b_contract_then_require_owner_approval
+  decision: p1b_owner_approved_freeze_before_state_construction

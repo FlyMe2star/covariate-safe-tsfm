@@ -1,0 +1,10 @@
+project: covariate-safe-tsfm
+runtime:
+  execution_environment: google_colab
+  python: python3
+  gpu_preference: A100
+  cpu_prerequisite_notebook: notebooks/09_p1b_freeze_router_state.ipynb
+  sealed_gpu_notebooks:
+    - notebooks/10_chronos2_p1b_sealed.ipynb
+    - notebooks/11_timesfm3_p1b_sealed.ipynb
+  analysis_notebook: notebooks/12_p1b_analyze_sealed.ipynb
