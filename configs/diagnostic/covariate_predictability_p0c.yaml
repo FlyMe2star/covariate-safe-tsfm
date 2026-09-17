@@ -1,0 +1,60 @@
+schema_version: 1
+experiment: historical-utility-predictability-p0c-v1
+status: screening_only
+parent_p0_config_hash: b2ace898d038
+prerequisite_p0b_config_hash: bfd5bae251a5
+prerequisite_decision: evidence/screening/p0b_cross_backbone_decision.yaml
+seed: 42
+
+scope:
+  calibration_origins_only: true
+  sealed_evaluation_origins_instantiated: false
+  model_inference_performed: false
+  full_p0_h3_computed: false
+  purpose: prequential_signal_screen_before_sealed_evaluation
+
+inputs:
+  source_stage: p0b
+  required_backbones: [chronos_2, timesfm_3]
+  required_tasks: [epf_np, rohlik_orders_1D, rossmann_1D, solar_with_weather_1H]
+  policy_identity: evaluated_deduplicated_policy_id
+  exclude_policy_ids: [target_only]
+  reexpand_deduplicated_aliases: false
+  metric: SQL
+
+historical_utility:
+  comparator_policy: target_only
+  formula: (target_only_sql - candidate_sql) / max(abs(target_only_sql), epsilon)
+  half_life_origins: 3
+  minimum_prior_finite_observations: 1
+  past_boundary: origin_index_strictly_less_than_scored_origin
+  weight_formula: 0.5 ** ((current_origin_index - past_origin_index) / half_life_origins)
+  positive_label: current_relative_utility_strictly_greater_than_zero
+  epsilon: 1.0e-12
+
+aggregation:
+  evaluation_unit: [backbone, task, item, target, origin, policy_id]
+  within_task: pooled_tie_aware_binary_auroc
+  primary: equal_weight_mean_of_four_task_aurocs
+  secondary: pooled_unit_micro_auroc
+  minimum_scored_rows_per_task: 20
+  require_both_label_classes_per_task: true
+
+gate:
+  minimum_task_macro_auroc_per_backbone: 0.65
+  minimum_backbones_passing: 2
+  next_if_pass: freeze_selector_and_sealed_p0_evaluation_protocol
+  next_if_fail: stop_or_reframe_without_accessing_sealed_evaluation_origins
+
+execution:
+  accelerator: cpu
+  artifact_format: csv_plus_json
+  output_status: screening_only
+  required_metadata:
+    - git_commit
+    - scientific_code_sha256
+    - config_hash
+    - parent_p0_config_hash
+    - prerequisite_p0b_config_hash
+    - prerequisite_p0b_scientific_code_sha256
+    - runtime

@@ -83,6 +83,17 @@ stage evaluates many more policies than P0a. P0b integrity-checks P0a as its pre
 then reruns all policies on the current GPU for matched numerical comparison and saves
 each task-origin atomically.
 
+P0b passed independently on both backbones. The next screen is CPU-only P0c, which
+uses strictly earlier calibration-origin utilities to predict the sign of utility at
+later calibration origins. It does not run either forecasting model and does not open
+the sealed evaluation origins:
+
+1. [`notebooks/07_p0c_predictability.ipynb`](notebooks/07_p0c_predictability.ipynb)
+
+Frozen P0c configuration hash: `00293b538504`. Both backbones must independently
+reach a four-task macro AUROC of at least 0.65 before the selector and sealed P0
+evaluation protocol may be frozen.
+
 Model weights remain governed by their upstream licenses; in particular, TimesFM 3
 weights are not covered by this repository's code license.
 
