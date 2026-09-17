@@ -1,0 +1,124 @@
+schema_version: 1
+experiment: covariate-oracle-p0b-v1
+result_status: verified_screening_evidence
+source_manifest_status: screening_only
+config_hash: bfd5bae251a5
+parent_p0_config_hash: b2ace898d038
+prerequisite_p0a_config_hash: 902c15e63f71
+git_commit: 7c3f60b675c9d4100207f9c698415921bc603171
+scientific_code_sha256: 191cac43fa5a20c636f0bc19d4c5d8755d1f1e67ba34b6d554e8c2b4a107806e
+backbone: timesfm_3
+model:
+  checkpoint: google/timesfm-3.0-pytorch
+  checkpoint_revision: 43046b85ec22d584a13f8098c2ed39c889e129c2
+  source_commit: 20191171b74f51bfead932b6b8d0c8f515e70f63
+  fev_wrapper_commit: 38007871dcf6dc6b04aed3a54d9cd86678d48d0b
+  license: timesfm-non-commercial-license-v1.0
+  model_load_seconds: 3.111529766999979
+runtime:
+  created_at_utc: 2026-09-17T05:57:40.329356+00:00
+  python: 3.13.15
+  platform: Linux-6.6.122+-x86_64-with-glibc2.39
+  torch: 2.11.0+cu128
+  cuda: "12.8"
+  gpu: NVIDIA A100-SXM4-40GB
+  fev: 0.11.0.dev0
+  timesfm: 2.0.2
+scope:
+  calibration_origins_only: true
+  sealed_evaluation_origins_instantiated: false
+  utility_predictability_computed: false
+  full_p0_gate_computed: false
+h2_screen:
+  aggregation_primary: task_macro_mean_oracle_headroom
+  per_task:
+    epf_np:
+      finite_units: 12
+      excluded_nonfinite_constant_pairs: 0
+      mean_oracle_headroom: 0.06477855951674484
+      median_oracle_headroom: 0.0
+      positive_headroom_fraction: 0.4166666666666667
+      unique_additional_policy_ids: 2
+      oracle_winner_counts:
+        all_dynamic: 7
+        "single_known_future:Grid load forecast": 2
+        "single_known_future:Wind power forecast": 3
+    rohlik_orders_1D:
+      finite_units: 21
+      excluded_nonfinite_constant_pairs: 0
+      mean_oracle_headroom: 0.048277516273656014
+      median_oracle_headroom: 0.04422034577163185
+      positive_headroom_fraction: 0.8095238095238095
+      unique_additional_policy_ids: 20
+      oracle_winner_counts:
+        correlation_top_1: 2
+        correlation_top_2: 2
+        "leave_one_out:mov_change": 1
+        "leave_one_out:precipitation": 1
+        "leave_one_out:shops_closed": 1
+        "leave_one_out:snow": 1
+        "leave_one_out:user_activity_1": 4
+        "leave_one_out:user_activity_2": 2
+        "leave_one_out:winter_school_holidays": 1
+        "single_known_future:shops_closed": 1
+        "single_known_future:winter_school_holidays": 1
+        target_only: 4
+    rossmann_1D:
+      finite_units: 6150
+      excluded_nonfinite_constant_pairs: 540
+      mean_oracle_headroom: 0.04460128964503459
+      median_oracle_headroom: 0.03712319197746111
+      positive_headroom_fraction: 0.9208130081300813
+      unique_additional_policy_ids: 14
+      oracle_winner_counts:
+        all_dynamic: 484
+        correlation_top_1: 2
+        correlation_top_2: 7
+        correlation_top_4: 376
+        "leave_one_out:Customers": 553
+        "leave_one_out:DayOfWeek": 2979
+        "leave_one_out:Open": 218
+        "leave_one_out:Promo": 13
+        "leave_one_out:SchoolHoliday": 485
+        "leave_one_out:StateHoliday": 925
+        "single_known_future:DayOfWeek": 3
+        "single_known_future:Open": 11
+        "single_known_future:Promo": 57
+        "single_known_future:SchoolHoliday": 5
+        "single_known_future:StateHoliday": 29
+        target_only: 3
+    solar_with_weather_1H:
+      finite_units: 12
+      excluded_nonfinite_constant_pairs: 0
+      mean_oracle_headroom: 0.09299891354859285
+      median_oracle_headroom: 0.0676505667870928
+      positive_headroom_fraction: 1.0
+      unique_additional_policy_ids: 19
+      oracle_winner_counts:
+        correlation_top_2: 1
+        correlation_top_4: 2
+        "leave_one_out:clouds_all": 1
+        "leave_one_out:day_length": 1
+        "leave_one_out:temp": 1
+        "leave_one_out:wind_speed": 2
+        "single_known_future:humidity": 1
+        "single_known_future:pressure": 1
+        "single_known_future:rain_1h": 2
+  task_macro_mean_oracle_headroom: 0.06266406974600708
+  unit_micro_mean_oracle_headroom: 0.044746584154236255
+  finite_unit_count: 6195
+  excluded_nonfinite_constant_pair_count: 540
+  minimum_task_macro_mean_oracle_headroom: 0.05
+  h2_gate_passed: true
+interpretation:
+  timesfm_h2_screen_passed: true
+  cross_backbone_gate_complete: true
+  paper_eligible: false
+  warning_messages_fatal: false
+  note: >-
+    TimesFM-3 passes the frozen task-macro H2 screen with 6.27% mean finite-oracle
+    headroom versus the 5% threshold. Rohlik and Rossmann individually reach 4.83%
+    and 4.46%, so the result must not be described as every task crossing 5%.
+    The unit-micro mean is 4.47%, and 540 non-finite Rossmann constant pairs were
+    excluded under the frozen symmetric rule. This calibration-only screening
+    artifact does not support a paper claim.

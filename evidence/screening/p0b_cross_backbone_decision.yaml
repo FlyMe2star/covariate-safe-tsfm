@@ -1,0 +1,39 @@
+schema_version: 1
+decision: p0b-cross-backbone-h2-gate
+result_status: verified_screening_decision
+config_hash: bfd5bae251a5
+parent_p0_config_hash: b2ace898d038
+prerequisite_p0a_config_hash: 902c15e63f71
+backbones:
+  chronos_2:
+    task_macro_mean_oracle_headroom: 0.06746248157970088
+    unit_micro_mean_oracle_headroom: 0.04801169561018943
+    finite_unit_count: 6195
+    excluded_nonfinite_constant_pair_count: 540
+    gpu: Tesla T4
+    passed: true
+    source: evidence/screening/chronos2_p0b_h2_summary.yaml
+  timesfm_3:
+    task_macro_mean_oracle_headroom: 0.06266406974600708
+    unit_micro_mean_oracle_headroom: 0.044746584154236255
+    finite_unit_count: 6195
+    excluded_nonfinite_constant_pair_count: 540
+    gpu: NVIDIA A100-SXM4-40GB
+    passed: true
+    source: evidence/screening/timesfm3_p0b_h2_summary.yaml
+gate:
+  minimum_task_macro_mean_oracle_headroom_per_backbone: 0.05
+  minimum_backbones_passing: 2
+  observed_backbones_passing: 2
+  passed: true
+decision_outcome:
+  action: freeze_historical_utility_predictability_screen
+  calibration_origins_only: true
+  sealed_evaluation_origins_instantiated: false
+  paper_claim_upgraded: false
+limitations:
+  - The results are screening-only point estimates without uncertainty intervals.
+  - Neither backbone exceeds 5% mean oracle headroom on every individual task.
+  - Candidate-oracle gains are deployability-agnostic and do not establish predictability.
+  - Backbones ran on different GPUs, so no cross-backbone runtime comparison is valid.
+  - P0b does not train a selector or access sealed evaluation origins.
