@@ -1,9 +1,13 @@
 # P0c historical-utility predictability screen contract
 
-Version: `p0c-v1`  
-Status: frozen before analysis  
-Parent P0 hash: `b2ace898d038`  
-Prerequisite P0b hash: `bfd5bae251a5`  
+Version: `p0c-v1`
+
+Status: frozen before analysis
+
+Parent P0 hash: `b2ace898d038`
+
+Prerequisite P0b hash: `bfd5bae251a5`
+
 Canonical P0c configuration hash: `00293b538504`
 
 ## Decision question
