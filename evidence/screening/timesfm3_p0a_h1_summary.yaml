@@ -1,0 +1,75 @@
+schema_version: 1
+experiment: covariate-harm-p0a-v1
+result_status: verified_screening_evidence
+source_manifest_status: screening_only
+config_hash: 902c15e63f71
+parent_p0_config_hash: b2ace898d038
+git_commit: c28f639c90112e0520af99474b4026ed978491cc
+scientific_code_sha256: 1440e6312d3d40d6773d1b9e408a55860a3f610db0e3230b075b81e9302b664b
+backbone: timesfm_3
+model:
+  checkpoint: google/timesfm-3.0-pytorch
+  checkpoint_revision: 43046b85ec22d584a13f8098c2ed39c889e129c2
+  source_commit: 20191171b74f51bfead932b6b8d0c8f515e70f63
+  fev_wrapper_commit: 38007871dcf6dc6b04aed3a54d9cd86678d48d0b
+  license: timesfm-non-commercial-license-v1.0
+  model_load_seconds: 4.808704519000003
+runtime:
+  created_at_utc: 2026-09-17T00:28:29.310710+00:00
+  python: 3.13.15
+  platform: Linux-6.6.122+-x86_64-with-glibc2.39
+  torch: 2.11.0+cu128
+  cuda: "12.8"
+  gpu: Tesla T4
+  fev: 0.11.0.dev0
+  timesfm: 2.0.2
+scope:
+  calibration_origins_only: true
+  sealed_evaluation_origins_instantiated: false
+  candidate_subset_search_enabled: false
+  full_p0_gate_computed: false
+h1_screen:
+  harmful_relative_loss: 0.05
+  aggregation_primary: task_macro_harm_rate
+  per_task:
+    epf_np:
+      paired_units: 12
+      finite_pairs: 12
+      excluded_nonfinite_pairs: 0
+      harmful_units: 5
+      harm_rate: 0.4166666666666667
+    rohlik_orders_1D:
+      paired_units: 21
+      finite_pairs: 21
+      excluded_nonfinite_pairs: 0
+      harmful_units: 5
+      harm_rate: 0.23809523809523808
+    rossmann_1D:
+      paired_units: 6690
+      finite_pairs: 6150
+      excluded_nonfinite_pairs: 540
+      harmful_units: 20
+      harm_rate: 0.0032520325203252032
+    solar_with_weather_1H:
+      paired_units: 12
+      finite_pairs: 12
+      excluded_nonfinite_pairs: 0
+      harmful_units: 2
+      harm_rate: 0.16666666666666666
+  task_macro_harm_rate: 0.20617015098722416
+  unit_micro_harm_rate: 0.00516545601291364
+  mean_relative_sql_gain_all_minus_target_only: 0.4926190773402382
+  finite_pair_count: 6195
+  excluded_nonfinite_pair_count: 540
+  minimum_task_macro_harm_rate: 0.20
+  h1_gate_passed: true
+interpretation:
+  timesfm_h1_screen_passed: true
+  cross_backbone_gate_complete: true
+  paper_eligible: false
+  hub_rate_limit_recovered: true
+  note: >-
+    TimesFM-3 passes the preregistered task-macro H1 screen by 0.62 percentage
+    points. The unit-micro rate is only 0.52%, and Rossmann harm is 0.33%.
+    The transient unauthenticated Hub 429 was retried successfully and every
+    task-variant unit was saved. This remains screening evidence.

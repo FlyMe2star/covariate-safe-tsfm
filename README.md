@@ -71,6 +71,18 @@ directly to Google Drive and safely resumes after disconnects. The exact aggrega
 clarification is recorded in
 [`notes/design/p0a-harm-screen-contract.md`](notes/design/p0a-harm-screen-contract.md).
 
+P0a passed independently on both backbones. The next sequential screen is P0b, which
+tests finite-candidate oracle headroom without opening sealed evaluation origins. Run
+Chronos-2 first and run TimesFM 3 only if the Chronos report passes review:
+
+1. [`notebooks/05_chronos2_p0b.ipynb`](notebooks/05_chronos2_p0b.ipynb)
+2. [`notebooks/06_timesfm3_p0b.ipynb`](notebooks/06_timesfm3_p0b.ipynb)
+
+Frozen P0b configuration hash: `bfd5bae251a5`. An A100 is recommended because this
+stage evaluates many more policies than P0a. P0b integrity-checks P0a as its prerequisite,
+then reruns all policies on the current GPU for matched numerical comparison and saves
+each task-origin atomically.
+
 Model weights remain governed by their upstream licenses; in particular, TimesFM 3
 weights are not covered by this repository's code license.
 

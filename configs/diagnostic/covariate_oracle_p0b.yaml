@@ -1,0 +1,109 @@
+schema_version: 1
+experiment: covariate-oracle-p0b-v1
+status: screening_only
+parent_p0_config_hash: b2ace898d038
+prerequisite_p0a_config_hash: 902c15e63f71
+prerequisite_decision: evidence/screening/p0a_cross_backbone_decision.yaml
+seed: 42
+
+scope:
+  hypothesis: >-
+    A finite predeclared covariate-policy oracle improves SQL by at least 5%
+    relative to the stronger of target-only and all-dynamic inference.
+  calibration_origins_only: true
+  sealed_evaluation_origins_instantiated: false
+  p0a_artifacts_integrity_checked_as_prerequisite: true
+  p0a_baselines_reused: false
+  utility_predictability_computed: false
+
+backbones:
+  chronos_2:
+    checkpoint: amazon/chronos-2
+    checkpoint_revision: 29ec3766d36d6f73f0696f85560a422f50e8498c
+    package: chronos-forecasting==2.2.2
+    device: cuda
+    torch_dtype: float32
+    batch_size: 16
+    cross_learning: true
+    as_univariate: false
+  timesfm_3:
+    checkpoint: google/timesfm-3.0-pytorch
+    checkpoint_revision: 43046b85ec22d584a13f8098c2ed39c889e129c2
+    source_commit: 20191171b74f51bfead932b6b8d0c8f515e70f63
+    fev_wrapper_commit: 38007871dcf6dc6b04aed3a54d9cd86678d48d0b
+    fev_wrapper_path: models/timesfm-3/model.py
+    device: cuda
+    min_batch: 4
+    max_batch: 16
+    per_core_batch_size: 8
+    max_context_length: 15360
+    license: timesfm-non-commercial-license-v1.0
+
+candidate_policies:
+  fixed: [target_only, all_dynamic]
+  enumerate_single_known_future: true
+  enumerate_leave_one_out: true
+  leave_one_out_domain: all_dynamic_covariates
+  historical_correlation_top_k: [1, 2, 4]
+  deduplicate_equivalent_column_sets: true
+  ordering:
+    - fixed
+    - single_known_future
+    - leave_one_out
+    - historical_correlation_top_k
+
+historical_correlation:
+  data_boundary: observations_strictly_before_each_origin
+  statistic: median_absolute_within_item_pearson
+  pooling_units: [item, target]
+  minimum_paired_observations: 3
+  zero_variance_pair: exclude
+  categorical_sequence_encoding: sorted_level_ordinal_within_sequence
+  missing_score_rank: after_finite_scores
+  tie_break: column_name_ascending
+
+metrics:
+  primary: SQL
+  secondary: [WQL, MASE, WAPE]
+  quantile_levels: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+  epsilon: 1.0e-12
+
+oracle_definition:
+  constant_reference: per_unit_minimum_of_same_run_target_only_and_all_dynamic
+  candidate_oracle: per_unit_minimum_over_all_finite_unique_candidate_losses
+  relative_headroom: (constant_reference_sql - oracle_sql) / max(abs(constant_reference_sql), epsilon)
+  baseline_finite_policy: exclude_unit_if_either_constant_sql_is_nonfinite
+  candidate_finite_policy: ignore_nonfinite_candidate_loss
+
+aggregation:
+  evaluation_unit: [task, item, target, origin]
+  primary: task_macro_mean_oracle_headroom
+  task_macro_mean_oracle_headroom: equal_weight_mean_of_four_per_task_means
+  secondary: unit_micro_mean_oracle_headroom
+  rationale: >-
+    Equal task weighting matches P0a and prevents Rossmann from dominating the
+    cross-task screening decision. Unit-micro headroom remains mandatory.
+
+gate:
+  minimum_task_macro_mean_oracle_headroom_per_backbone: 0.05
+  minimum_backbones_passing: 2
+  next_if_pass: freeze_historical_utility_predictability_screen
+  next_if_fail: stop_or_reframe_without_accessing_sealed_evaluation_origins
+
+execution:
+  require_cuda: true
+  recommended_accelerator: A100
+  resume_unit: [backbone, task, origin]
+  artifact_format: csv_plus_json_sidecar
+  atomic_writes: true
+  prefetch_each_dataset_once_per_process: true
+  rerun_constants_on_current_hardware: true
+  required_metadata:
+    - git_commit
+    - scientific_code_sha256
+    - config_hash
+    - parent_p0_config_hash
+    - prerequisite_p0a_config_hash
+    - dataset_fingerprint
+    - checkpoint_revision
+    - runtime

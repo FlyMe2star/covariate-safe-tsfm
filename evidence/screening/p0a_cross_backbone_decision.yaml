@@ -1,0 +1,35 @@
+schema_version: 1
+decision: p0a-cross-backbone-h1-gate
+result_status: verified_screening_decision
+config_hash: 902c15e63f71
+parent_p0_config_hash: b2ace898d038
+backbones:
+  chronos_2:
+    task_macro_harm_rate: 0.25011324041811844
+    unit_micro_harm_rate: 0.015012106537530266
+    finite_pair_count: 6195
+    excluded_nonfinite_pair_count: 540
+    passed: true
+    source: evidence/screening/chronos2_p0a_h1_summary.yaml
+  timesfm_3:
+    task_macro_harm_rate: 0.20617015098722416
+    unit_micro_harm_rate: 0.00516545601291364
+    finite_pair_count: 6195
+    excluded_nonfinite_pair_count: 540
+    passed: true
+    source: evidence/screening/timesfm3_p0a_h1_summary.yaml
+gate:
+  minimum_task_macro_harm_rate_per_backbone: 0.20
+  minimum_backbones_passing: 2
+  observed_backbones_passing: 2
+  passed: true
+decision_outcome:
+  action: advance_to_p0b_finite_candidate_oracle_screen
+  calibration_origins_only: true
+  sealed_evaluation_origins_instantiated: false
+  paper_claim_upgraded: false
+limitations:
+  - Both task-macro rates pass, but both unit-micro rates are below 0.02.
+  - Rossmann dominates the unit count and exhibits little all-dynamic harm.
+  - TimesFM-3 clears the task-macro threshold by only 0.00617 absolute.
+  - P0a does not establish oracle headroom or deployable predictability.
