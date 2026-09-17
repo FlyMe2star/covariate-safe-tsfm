@@ -1,9 +1,10 @@
 project: covariate-safe-tsfm
-working_title: "When Extra Variables Hurt: Reliability-Gated Covariate Selection for Zero-Shot Time-Series Foundation Models"
-status: stopped_at_failed_p0c_cross_backbone_gate
+working_title: "When Covariate Routing Is Trustworthy: Applicability-Gated Input Selection for Zero-Shot Time-Series Foundation Models"
+status: reframed_p1a_applicability_confidence_audit_pending
 core_question: >-
-  Can historical forecast utility predict whether native covariate conditioning will improve
-  a frozen zero-shot TSFM at a future forecast origin?
+  Can calibration-only historical utility certify the task-backbone groups in which
+  dynamic covariate-policy routing is reliable, while safely falling back to a constant
+  policy elsewhere?
 hypotheses:
   H1:
     statement: Adding all available covariates causes practically meaningful harm for a nontrivial fraction of series-origins.
@@ -18,7 +19,7 @@ hypotheses:
     p0_gate: utility_sign_auroc >= 0.65
     required_backbones: [chronos_2, timesfm_3]
 candidate_method:
-  name: historical-utility reliability gate
+  name: applicability-gated historical-utility router
   training: none for the frozen forecasting backbone
   inputs: historical rolling-origin losses and availability metadata
   actions:
@@ -27,7 +28,14 @@ candidate_method:
     - best_single_known_future
     - leave_one_out
     - correlation_top_k
-  abstention: fall back to target_only when estimated benefit is below a calibrated margin
+  group_certificate:
+    point_auroc_at_least: 0.60
+    one_sided_95pct_lower_bound_strictly_greater_than: 0.50
+    resampling_unit: [item_id, target, origin_index]
+  routing: dynamic only inside certified task-backbone groups
+  abstention: >-
+    abstain from dynamic routing and use a calibration-selected constant input policy;
+    always produce a forecast
 evidence_boundaries:
   calibration: earlier rolling origins only
   evaluation: later sealed rolling origins
@@ -36,9 +44,9 @@ evidence_boundaries:
     - tuning on official final-test outcomes
     - treating past-only covariates as known in the forecast horizon
 kill_conditions:
-  - Any of H1-H3 fails on either backbone in P0.
-  - Apparent gains disappear under a target-only/all-covariate matched-compute comparison.
-  - The selector cannot beat a constant global policy with paired uncertainty estimates.
+  - P1a certifies fewer than three of eight groups or no group for either backbone.
+  - The frozen gated router cannot beat calibration-selected constant policies on sealed origins.
+  - Applicability abstention does not reduce worst-group downside relative to ungated routing.
 p0_outcome:
   p0a_h1_cross_backbone_passed: true
   p0b_h2_cross_backbone_passed: true
@@ -47,4 +55,28 @@ p0_outcome:
   timesfm_3_task_macro_auroc: 0.7421419794416059
   required_auroc: 0.65
   sealed_evaluation_origins_instantiated: false
-  decision: stop_or_explicitly_reframe_before_any_sealed_evaluation
+  decision: original_universal_cross_backbone_claim_stopped
+reframed_hypotheses:
+  H4:
+    statement: >-
+      Historical-utility predictability is heterogeneous by task and backbone, and a
+      calibration-only confidence rule can identify applicable groups.
+    p1a_gate: >-
+      point AUROC >= 0.60 and one-sided 95% lower bound > 0.50 for at least three
+      groups, with at least one eligible task per backbone
+    evidence_status: pending_screening
+  H5:
+    statement: >-
+      On sealed origins, applicability-gated routing improves paired loss over both
+      the ungated router and a calibration-selected constant policy.
+    evidence_status: blocked_pending_p1a_and_router_freeze
+  H6:
+    statement: >-
+      Abstaining from dynamic routing in uncertified groups reduces worst-group
+      downside without abstaining from forecasting.
+    evidence_status: blocked_pending_p1a_and_router_freeze
+non_goals:
+  - universal covariate selection
+  - causal variable discovery
+  - arbitration among different forecasting backbones
+  - abstention from producing a forecast

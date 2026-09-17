@@ -36,3 +36,32 @@ The search found extensive work on *how to inject or adapt to covariates*, and m
 3. an abstaining selector shared across two native covariate-aware TSFMs.
 
 This is a search-derived hypothesis, not a novelty fact. The claim remains blocked until a broader title/abstract/full-text search and citation-chaining pass are complete.
+
+## Reframe collision map (2026-09-17)
+
+- **TFMAdapter: Instance-level Adaptation of Time Series Foundation Models for
+  Covariates** (CIKM 2025) adapts a pretrained forecaster at the instance level. It is
+  close on covariate use, but changes model behavior through adaptation; our proposed
+  core leaves the native TSFM frozen and routes only predeclared input policies.
+  <https://openreview.net/pdf?id=0VhlfRxLvG>
+- **Tune-as-Inference: Amortized Configuration Learning for Time-Series Foundation
+  Models** (ICLR 2026 Workshop) learns to rank a model's configurations, such as
+  context length and patch size, from statistical meta-features. It creates direct
+  pressure against a broad “configuration selector” claim. Our narrower object is a
+  semantic covariate-policy decision with an explicit applicability certificate and a
+  constant-policy fallback. <https://openreview.net/pdf?id=LycMKa0o0b>
+- **Synapse: Adaptive Arbitration of Complementary Expertise in Time-Series Foundation
+  Models** (TMLR 2026) arbitrates predictive distributions across multiple TSFMs. Our
+  router stays within one fixed backbone and never combines model outputs.
+  <https://arxiv.org/abs/2511.05460>
+- **Selective Time Series Forecasting via Metalearning** (2026) abstains on difficult
+  forecast instances. Our system always emits a forecast; abstention applies only to
+  dynamic covariate-policy routing. <https://arxiv.org/abs/2606.23448>
+- General selective-regression work formalizes prediction/rejection tradeoffs, but it
+  reinforces the need to avoid presenting policy fallback as ordinary whole-prediction
+  rejection. <https://proceedings.mlr.press/v162/shah22a.html>
+
+The resulting novelty hypothesis is: **reliability-certified abstention from
+covariate-policy routing in frozen native covariate-aware TSFMs, using rolling-origin
+utility and a constant-policy fallback**. This remains a provisional positioning, not
+a “first” claim.

@@ -1,15 +1,18 @@
 # Covariate-Safe TSFM
 
-Research code for **reliability-gated covariate selection in zero-shot time-series foundation models**.
+Research code for **applicability-gated covariate-policy routing in zero-shot time-series foundation models**.
 
 Working paper title:
 
-> When Extra Variables Hurt: Reliability-Gated Covariate Selection for Zero-Shot Time-Series Foundation Models
+> When Covariate Routing Is Trustworthy: Applicability-Gated Input Selection for Zero-Shot Time-Series Foundation Models
 
 ## Status
 
-The original cross-backbone direction **stopped at the P0c diagnostic gate**. No
-paper-level result is claimed. The question was deliberately falsifiable:
+The original universal cross-backbone direction **stopped at the P0c diagnostic
+gate**. It has not been rescued by lowering its threshold. A narrower
+task–backbone-applicability hypothesis is now authorized for calibration-only P1a
+screening. No paper-level result is claimed. The original question was deliberately
+falsifiable:
 
 > Across native covariate-aware TSFMs, do extra covariates harm a meaningful fraction of forecasts, and can strictly historical evidence predict when to include them?
 
@@ -100,6 +103,17 @@ P0c did not pass: Chronos-2 reached 0.5487 task-macro AUROC and TimesFM 3 reache
 frozen and sealed evaluation origins remain unopened. The original protocol must
 not continue by lowering the threshold or changing the task aggregation. Further
 work requires an explicit new framing and frozen contract.
+
+That reframe is now frozen as P1a. It asks whether individual `(task, backbone)`
+groups can be certified using a point AUROC of at least 0.60 and a clustered-bootstrap
+one-sided 95% lower bound strictly above 0.50. Continuation requires at least three
+eligible groups and at least one task for each backbone. P1a uses only the existing P0c
+score table, performs no model inference, and keeps sealed origins closed:
+
+1. [`notebooks/08_p1a_applicability_audit.ipynb`](notebooks/08_p1a_applicability_audit.ipynb)
+
+Frozen P1a configuration hash: `6fe503a9d399`. Use a CPU runtime. A P1a pass authorizes
+only a subsequent router-freeze contract—not sealed evaluation by itself.
 
 Model weights remain governed by their upstream licenses; in particular, TimesFM 3
 weights are not covered by this repository's code license.

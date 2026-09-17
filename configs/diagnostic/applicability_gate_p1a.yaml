@@ -1,0 +1,51 @@
+schema_version: 1
+experiment: applicability-confidence-audit-p1a-v1
+status: screening_only
+evidence_role: development_only_reframe_gate
+prerequisite_p0c_config_hash: 00293b538504
+prerequisite_p0c_scientific_code_sha256: 86e9785091932f805c73569da918d2becb9fba11a947cae7d71b426240cfd997
+prerequisite_p0c_decision: evidence/screening/p0c_predictability_decision.yaml
+seed: 42
+
+scope:
+  calibration_origins_only: true
+  sealed_evaluation_origins_instantiated: false
+  model_inference_performed: false
+  purpose: certify_task_backbone_applicability_before_router_freeze
+
+inputs:
+  p0c_report_relative_path: reports/p0c_predictability_screen.json
+  p0c_score_relative_path: scores/p0c_prequential_scores.csv
+  required_backbones: [chronos_2, timesfm_3]
+  required_tasks: [epf_np, rohlik_orders_1D, rossmann_1D, solar_with_weather_1H]
+  score: historical_utility_score
+  label: realized_relative_utility_strictly_greater_than_zero
+
+bootstrap:
+  resampling_unit: [item_id, target, origin_index]
+  preserve_policy_rows_within_unit: true
+  replicates: 2000
+  lower_confidence_level: 0.95
+  lower_quantile: 0.05
+  minimum_valid_replicate_fraction: 0.90
+
+group_eligibility:
+  point_auroc_at_least: 0.60
+  one_sided_95pct_lower_bound_strictly_greater_than: 0.50
+  minimum_scored_rows: 20
+  require_both_label_classes: true
+
+continuation_gate:
+  minimum_eligible_groups_total: 3
+  minimum_eligible_tasks_per_backbone: 1
+  rationale: >-
+    At least one eligible task for each backbone establishes cross-backbone applicability;
+    a third eligible group prevents continuation from resting on one isolated task per model.
+  next_if_pass: freeze_applicability_gated_router_without_accessing_sealed_outcomes
+  next_if_fail: stop_or_reframe_without_accessing_sealed_evaluation_origins
+
+execution:
+  accelerator: cpu
+  artifact_format: json
+  output_status: screening_only
+  expected_runtime_minutes: 2_to_10

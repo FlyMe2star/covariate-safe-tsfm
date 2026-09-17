@@ -6,7 +6,8 @@ New time-series foundation models can consume multiple target variables and past
 
 ## Research question
 
-Can strictly historical forecast evidence identify when native covariate conditioning helps a frozen zero-shot TSFM, and abstain to target-only inference when it is unreliable?
+Can strictly historical forecast evidence certify the task–backbone settings in which
+dynamic covariate-policy routing is trustworthy for a frozen zero-shot TSFM?
 
 ## Scope
 
@@ -20,15 +21,19 @@ Can strictly historical forecast evidence identify when native covariate conditi
 ## Intended contribution
 
 1. A diagnostic showing when and how often covariates hurt native zero-shot TSFMs.
-2. A leakage-safe, model-agnostic reliability gate that chooses among a small predeclared set of covariate policies using only earlier origins.
-3. Cross-backbone and cross-domain evidence about transferability, abstention, and failure modes.
+2. A leakage-safe applicability certificate that enables dynamic policy routing only
+   for task–backbone groups with statistically reliable calibration evidence.
+3. A safe fallback to a calibration-selected constant policy when applicability is not
+   certified, plus cross-backbone and cross-domain failure analysis.
 
 ## Non-claims
 
 - No claim that covariates are generally harmful.
 - No causal interpretation of selected variables.
 - No claim of a new foundation model or a universally optimal feature selector.
-- No paper claim until all pre-registered P0 gates pass.
+- No model arbitration, whole-forecast abstention, or causal-variable selection claim.
+- No paper claim from P0/P1a screening artifacts; sealed evidence requires a separately
+  frozen router and evaluation contract.
 
 ## Constraints
 

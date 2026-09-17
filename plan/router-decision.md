@@ -1,16 +1,22 @@
 # Router decision
 
 Route: **empirical ML paper**  
-Status: accepted for P0 only
+Status: empirical route retained; P1a reframe accepted, sealed evaluation blocked
 
-The project makes testable claims about model behavior and a deployable selection rule. A review-paper route would not answer the central question. Manuscript drafting remains blocked until the P0 gates pass.
+The project makes testable claims about model behavior and a deployable input-policy
+rule. A review-paper route would not answer the central question. The original P0
+cross-backbone claim is stopped. Manuscript result drafting remains blocked while the
+new heterogeneous-applicability hypothesis undergoes P1a screening.
 
 ## Execution stages
 
 1. **P0 falsification** — frozen zero-shot inference, finite oracle headroom, historical-utility predictability.
-2. **P1 method freeze** — only if P0 passes; specify selector, abstention rule, uncertainty, and baselines.
-3. **P2 paper-eligible evaluation** — untouched later origins or held-out tasks, paired uncertainty, ablations, efficiency.
-4. **P3 manuscript** — backfill only verified artifacts into the evidence matrix.
+2. **P1a applicability audit** — calibration-only clustered confidence intervals under
+   the new frozen contract; no model inference and no sealed access.
+3. **P1b method freeze** — only if P1a passes; specify the dynamic router, constant
+   fallback, baselines, uncertainty, and multiplicity controls.
+4. **P2 paper-eligible evaluation** — untouched later origins or held-out tasks, paired uncertainty, ablations, efficiency.
+5. **P3 manuscript** — backfill only verified artifacts into the evidence matrix.
 
 ## Compute route
 
