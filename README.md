@@ -8,7 +8,8 @@ Working paper title:
 
 ## Status
 
-The project is in **P0 diagnostic screening**. No paper-level result is claimed yet. The first question is deliberately falsifiable:
+The original cross-backbone direction **stopped at the P0c diagnostic gate**. No
+paper-level result is claimed. The question was deliberately falsifiable:
 
 > Across native covariate-aware TSFMs, do extra covariates harm a meaningful fraction of forecasts, and can strictly historical evidence predict when to include them?
 
@@ -93,6 +94,12 @@ the sealed evaluation origins:
 Frozen P0c configuration hash: `00293b538504`. Both backbones must independently
 reach a four-task macro AUROC of at least 0.65 before the selector and sealed P0
 evaluation protocol may be frozen.
+
+P0c did not pass: Chronos-2 reached 0.5487 task-macro AUROC and TimesFM 3 reached
+0.7421, so only one of two required backbones crossed 0.65. The selector was not
+frozen and sealed evaluation origins remain unopened. The original protocol must
+not continue by lowering the threshold or changing the task aggregation. Further
+work requires an explicit new framing and frozen contract.
 
 Model weights remain governed by their upstream licenses; in particular, TimesFM 3
 weights are not covered by this repository's code license.

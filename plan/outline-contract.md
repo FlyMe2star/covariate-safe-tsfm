@@ -1,6 +1,6 @@
 # Outline contract
 
-Status: blocked pending P0
+Status: stopped after failed P0c cross-backbone gate
 
 ## Provisional story
 
@@ -22,3 +22,11 @@ Status: blocked pending P0
 ## Drafting rule
 
 No abstract, claimed contribution, or result paragraph is written in factual tense until its evidence row is `verified`. Failed P0 gates trigger a stop/reframe decision instead of a weaker retrospective threshold.
+
+## P0 outcome
+
+P0a and P0b passed, but P0c failed because Chronos-2 reached only 0.5487
+task-macro historical-utility sign AUROC versus the frozen 0.65 threshold.
+TimesFM 3 passed at 0.7421, leaving only one of the two required backbones.
+The original outline is therefore inactive, and sealed evaluation origins remain
+unopened. Any replacement story requires a new approved research contract.

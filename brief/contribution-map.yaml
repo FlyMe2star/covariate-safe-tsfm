@@ -1,6 +1,6 @@
 project: covariate-safe-tsfm
 working_title: "When Extra Variables Hurt: Reliability-Gated Covariate Selection for Zero-Shot Time-Series Foundation Models"
-status: planned
+status: stopped_at_failed_p0c_cross_backbone_gate
 core_question: >-
   Can historical forecast utility predict whether native covariate conditioning will improve
   a frozen zero-shot TSFM at a future forecast origin?
@@ -39,3 +39,12 @@ kill_conditions:
   - Any of H1-H3 fails on either backbone in P0.
   - Apparent gains disappear under a target-only/all-covariate matched-compute comparison.
   - The selector cannot beat a constant global policy with paired uncertainty estimates.
+p0_outcome:
+  p0a_h1_cross_backbone_passed: true
+  p0b_h2_cross_backbone_passed: true
+  p0c_h3_precursor_cross_backbone_passed: false
+  chronos_2_task_macro_auroc: 0.5486700780578626
+  timesfm_3_task_macro_auroc: 0.7421419794416059
+  required_auroc: 0.65
+  sealed_evaluation_origins_instantiated: false
+  decision: stop_or_explicitly_reframe_before_any_sealed_evaluation

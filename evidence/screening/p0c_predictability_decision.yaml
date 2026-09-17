@@ -1,0 +1,54 @@
+schema_version: 1
+decision: p0c-cross-backbone-h3-precursor-gate
+result_status: verified_screening_decision
+config_hash: 00293b538504
+parent_p0_config_hash: b2ace898d038
+prerequisite_p0b_config_hash: bfd5bae251a5
+git_commit: 81c21495db2a8f57b9c21e0ef94a711091cd5a01
+scientific_code_sha256: 86e9785091932f805c73569da918d2becb9fba11a947cae7d71b426240cfd997
+scope:
+  calibration_origins_only: true
+  sealed_evaluation_origins_instantiated: false
+  model_inference_performed: false
+  full_p0_h3_computed: false
+backbones:
+  chronos_2:
+    task_macro_auroc: 0.5486700780578626
+    unit_micro_auroc: 0.7951584914019877
+    scored_row_count: 76072
+    per_task_auroc:
+      epf_np: 0.49130434782608695
+      rohlik_orders_1D: 0.48208444275389883
+      rossmann_1D: 0.7944165216514648
+      solar_with_weather_1H: 0.426875
+    passed: false
+  timesfm_3:
+    task_macro_auroc: 0.7421419794416059
+    unit_micro_auroc: 0.8575636492862847
+    scored_row_count: 76072
+    per_task_auroc:
+      epf_np: 0.5702479338842975
+      rohlik_orders_1D: 0.8802710843373494
+      rossmann_1D: 0.8579835667558832
+      solar_with_weather_1H: 0.6600653327888935
+    passed: true
+gate:
+  minimum_task_macro_auroc_per_backbone: 0.65
+  minimum_backbones_passing: 2
+  observed_backbones_passing: 1
+  passed: false
+decision_outcome:
+  action: stop_or_explicitly_reframe_original_cross_backbone_direction
+  selector_frozen: false
+  sealed_evaluation_authorized: false
+  paper_claim_upgraded: false
+score_artifact:
+  private_relative_path: scores/p0c_prequential_scores.csv
+  row_count: 152144
+  sha256: 2f311fc14ba6182f43d4f3bca12b1674c592d76749a62a304eca86aaf41b68b4
+limitations:
+  - Chronos-2 fails the frozen task-macro threshold despite a high unit-micro AUROC.
+  - Rossmann contributes 75525 of 76072 scored rows per backbone and dominates micro aggregation.
+  - TimesFM-3 passes, but the frozen contract requires both backbones to pass independently.
+  - The result is a calibration-only screen and is not paper-eligible evidence.
+  - Thresholds, aggregation, and half-life must not be revised under the original hypothesis.
