@@ -1,0 +1,69 @@
+schema_version: 1
+artifact: p1b-calibration-only-router-state
+result_status: verified_method_state_not_paper_result
+review_date: "2026-09-18"
+config_hash: 151648d511c7
+git_commit: c13fc29c9cc2dad93c63427f1cd27daca205575f
+scientific_code_sha256: 85f27f8ea20970f2dda317772ae15d99ccf2eaafdeacbc1f0594845c74699938
+scope:
+  calibration_origins_only: true
+  sealed_evaluation_origins_instantiated: false
+  model_inference_performed: false
+  router_updates_from_sealed_outcomes: false
+applicability_map:
+  chronos_2:
+    epf_np: false
+    rohlik_orders_1D: false
+    rossmann_1D: true
+    solar_with_weather_1H: false
+  timesfm_3:
+    epf_np: false
+    rohlik_orders_1D: true
+    rossmann_1D: true
+    solar_with_weather_1H: true
+constant_policies:
+  chronos_2:
+    epf_np: {fullset: "single_known_future:Wind power forecast", binary: all_dynamic}
+    rohlik_orders_1D: {fullset: correlation_top_1, binary: target_only}
+    rossmann_1D: {fullset: all_dynamic, binary: all_dynamic}
+    solar_with_weather_1H: {fullset: "single_known_future:humidity", binary: all_dynamic}
+  timesfm_3:
+    epf_np: {fullset: "single_known_future:Wind power forecast", binary: all_dynamic}
+    rohlik_orders_1D: {fullset: correlation_top_1, binary: target_only}
+    rossmann_1D: {fullset: "leave_one_out:DayOfWeek", binary: all_dynamic}
+    solar_with_weather_1H: {fullset: correlation_top_4, binary: all_dynamic}
+calibration_units:
+  epf_np: {total_per_backbone: 12, eligible_per_backbone: 12, excluded_per_backbone: 0}
+  rohlik_orders_1D: {total_per_backbone: 21, eligible_per_backbone: 21, excluded_per_backbone: 0}
+  rossmann_1D: {total_per_backbone: 6690, eligible_per_backbone: 6150, excluded_per_backbone: 540}
+  solar_with_weather_1H: {total_per_backbone: 12, eligible_per_backbone: 12, excluded_per_backbone: 0}
+router_score_artifact:
+  private_relative_path: state/series_policy_scores.csv
+  row_count: 33790
+  expected_row_count: 33790
+  sha256: 3cab9c3dec50611415039de0172fcffd02091a13bb11cd0eb8d66e5bb23a1219
+source_artifacts:
+  p1a_report_sha256: 5bd11000322df7756ed56cba5530a72e1931b2e177ebeff619012dbf455e06f8
+  p1a_scientific_code_sha256: 4304ca955b6844956db9d0851d347d6a41f7ad35a9ef41656acced56b61398ba
+  p0b_scientific_code_sha256:
+    chronos_2: d425ff661e9a25ebfbfcf709f14ddf82b7e521f75717079c6cbda73177558900
+    timesfm_3: 191cac43fa5a20c636f0bc19d4c5d8755d1f1e67ba34b6d554e8c2b4a107806e
+  p0b_calibration_inventory_sha256: eb13bf4cbbe3021cb6f9da159aa637d928377c6195ab0edca5963e5e6a8e4c2a
+  p0b_calibration_file_count: 132
+  expected_p0b_calibration_file_count: 132
+review_checks:
+  config_commit_and_scientific_hashes_match: true
+  ancestor_scientific_hashes_match: true
+  router_score_row_count_matches_exact_construction: true
+  p0b_inventory_file_count_matches_exact_construction: true
+  all_eight_constant_policies_present: true
+  rossmann_symmetric_nonfinite_counts_match_p0b: true
+  sealed_evaluation_untouched: true
+authorization:
+  router_state_frozen: true
+  chronos_2_sealed_notebook_authorized: true
+  timesfm_3_sealed_notebook_authorized_after_chronos_review: false
+  paper_claim_upgraded: false
+private_manifest:
+  path: /content/drive/MyDrive/covariate-safe-tsfm/private_manifests/p1b/reports/p1b_router_state.json
+  must_remain_outside_git: true

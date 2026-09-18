@@ -126,14 +126,17 @@ The P1b router and evaluation design was owner-approved on 2026-09-17 and is fro
 and [`configs/evaluation/applicability_router_p1b.yaml`](configs/evaluation/applicability_router_p1b.yaml).
 Frozen P1b configuration hash: `151648d511c7`.
 
-The next and only authorized run is the CPU prerequisite:
+The CPU prerequisite is verified and archived in
+[`evidence/method/p1b_router_state_summary.yaml`](evidence/method/p1b_router_state_summary.yaml).
+It confirms calibration-only construction with no sealed-origin access.
 
-1. [`notebooks/09_p1b_freeze_router_state.ipynb`](notebooks/09_p1b_freeze_router_state.ipynb)
+The next and only authorized run is the Chronos-2 sealed evaluation, preferably on
+an A100:
 
-It reconstructs the router exclusively from calibration artifacts and writes an
-immutable state manifest. Send its compact JSON for review before running the A100-
-recommended sealed notebooks 10 and 11. Notebook 12 remains blocked until both
-backbone completion reports pass review.
+1. [`notebooks/10_chronos2_p1b_sealed.ipynb`](notebooks/10_chronos2_p1b_sealed.ipynb)
+
+Send its completion JSON for review before running notebook 11. Notebooks 11 and 12
+remain blocked at this checkpoint.
 
 Model weights remain governed by their upstream licenses; in particular, TimesFM 3
 weights are not covered by this repository's code license.
