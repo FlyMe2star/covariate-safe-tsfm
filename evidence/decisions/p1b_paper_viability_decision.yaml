@@ -1,0 +1,32 @@
+schema_version: 1
+decision: p1b-paper-viability-after-frozen-sealed-analysis
+decision_date: "2026-09-18"
+status: positive_method_route_stopped_audit_pending
+evidence: evidence/results/p1b_sealed_analysis_summary.yaml
+frozen_contract_outcome:
+  primary_fixed_sequence_test_passed: false
+  conditional_second_test_inferentially_tested: false
+  per_backbone_safety_passed: false
+  worst_group_downside_reduced: false
+claim_disposition:
+  C8: refuted_under_frozen_p1b_evaluation
+  C9: not_confirmatorily_tested_and_descriptively_opposite
+  C10: not_supported
+research_integrity_boundary:
+  threshold_revision_on_same_sealed_results: prohibited
+  method_revision_on_same_sealed_results: prohibited
+  alternative_aggregation_as_confirmatory_result: prohibited
+  bounded_negative_result_retained: true
+paper_viability:
+  current_positive_ccf_b_method_paper: stop
+  current_negative_result_alone: insufficient_breadth_for_target
+  negative_study_requires:
+    - independently_predeclared_additional_tasks_or_backbones
+    - explicit_failure_mechanism_analysis
+    - new_untouched_evaluation_partition_or_external_benchmark
+  recommended_route: complete_read_only_archive_audit_then_pivot_topic
+authorization:
+  scientific_code_change: false
+  new_model_inference: false
+  next_notebook: notebooks/13_p1b_archive_audit.ipynb
+

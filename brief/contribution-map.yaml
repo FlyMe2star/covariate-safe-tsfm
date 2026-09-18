@@ -1,6 +1,6 @@
 project: covariate-safe-tsfm
 working_title: "When Covariate Routing Is Trustworthy: Applicability-Gated Input Selection for Zero-Shot Time-Series Foundation Models"
-status: p1b_both_backbones_complete_frozen_analysis_authorized
+status: p1b_success_gate_failed_reproducibility_audit_pending
 core_question: >-
   Can calibration-only historical utility certify the task-backbone groups in which
   dynamic covariate-policy routing is reliable, while safely falling back to a constant
@@ -11,18 +11,18 @@ primary_claim:
     A calibration-certified applicability gate can improve sealed-origin covariate-policy
     routing over a strong calibration-best constant policy without changing frozen TSFM
     weights.
-  status: planned_under_frozen_p1b_contract
+  status: verified_refuted_under_frozen_p1b
 secondary_claims:
   - id: C9
     statement: >-
       Applicability gating improves the same historical-utility router relative to
       applying it indiscriminately in all task-backbone groups.
-    status: planned_under_frozen_p1b_contract
+    status: not_inferentially_tested_fixed_sequence_stop
   - id: C10
     statement: >-
       Constant-policy fallback limits worst-group downside while the system continues
       to issue every forecast.
-    status: planned_under_frozen_p1b_contract
+    status: verified_not_supported
 risk_factors:
   - Only four of eight task-backbone groups are certified and Chronos-2 coverage is Rossmann-only.
   - The TimesFM-3 solar confidence lower bound is only slightly above chance.
@@ -96,12 +96,12 @@ reframed_hypotheses:
     statement: >-
       On sealed origins, applicability-gated routing improves paired loss over both
       the ungated router and a calibration-selected constant policy.
-    evidence_status: planned_under_frozen_p1b_contract
+    evidence_status: refuted_against_constant_and_not_confirmatorily_tested_against_ungated
   H6:
     statement: >-
       Abstaining from dynamic routing in uncertified groups reduces worst-group
       downside without abstaining from forecasting.
-    evidence_status: planned_under_frozen_p1b_contract
+    evidence_status: not_supported_safety_failed_and_worst_group_equal
 non_goals:
   - universal covariate selection
   - causal variable discovery
@@ -118,3 +118,19 @@ p1a_outcome:
   gate_passed: true
   sealed_evaluation_origins_instantiated: false
   decision: p1b_owner_approved_freeze_before_state_construction
+p1b_outcome:
+  config_hash: 151648d511c7
+  scientific_code_sha256: 85f27f8ea20970f2dda317772ae15d99ccf2eaafdeacbc1f0594845c74699938
+  routing_units: 8980
+  step_1_equal_group_macro_gain_vs_fullset_constant: -0.011389533625316414
+  step_1_one_sided_95pct_lower_bound: -0.02385452394705057
+  step_1_passed: false
+  step_2_inferentially_tested: false
+  step_2_descriptive_equal_group_macro_gain_vs_ungated: -0.09643585193700752
+  per_backbone_safety:
+    chronos_2: -0.0008514540876606365
+    timesfm_3: -0.02192761316297219
+  safety_passed: false
+  frozen_kill_condition_triggered: true
+  method_revision_on_same_sealed_results: prohibited
+  decision: archive_bounded_negative_result_then_pivot_or_predeclare_independent_expansion

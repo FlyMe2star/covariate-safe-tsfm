@@ -1,0 +1,71 @@
+schema_version: 1
+artifact: p1b-sealed-analysis-summary
+result_status: verified_negative_result_reproducibility_audit_pending
+review_date: "2026-09-18"
+source:
+  private_report: private_manifests/p1b/reports/p1b_sealed_analysis.json
+  config_hash: 151648d511c7
+  git_commit: 362205a0b7dfc1e362bf5dd1489c1f42f3ac9814
+  scientific_code_sha256: 85f27f8ea20970f2dda317772ae15d99ccf2eaafdeacbc1f0594845c74699938
+  report_sha256: pending_read_only_archive_audit
+counts:
+  routing_units: 8980
+  decision_rows: 62860
+  exhaustive_policy_loss_rows: 143736
+  selected_method_loss_rows: 71840
+routing:
+  dynamic_positive_score: 8940
+  applicability_constant_fallback: 38
+  target_default: 2
+  dynamic_positive_score_fraction: 0.9955456570155902
+fixed_sequence:
+  step_1_gated_vs_fullset_best_constant:
+    estimand: equal_group_macro_paired_relative_sql_gain
+    point_estimate: -0.011389533625316414
+    unit_micro_mean: -0.009109119905886857
+    one_sided_95pct_lower_bound: -0.02385452394705057
+    bootstrap_median: -0.011361590295054198
+    bootstrap_upper_95pct: 0.0012012342548456205
+    bootstrap_replicates: 5000
+    passed: false
+  step_2_gated_vs_ungated:
+    estimand: equal_group_macro_paired_relative_sql_gain
+    point_estimate: -0.09643585193700752
+    unit_micro_mean: -0.0006874320945372521
+    one_sided_95pct_lower_bound: -0.21689844570323125
+    bootstrap_median: -0.09000255099362822
+    bootstrap_upper_95pct: -0.006643640999091074
+    inferentially_tested: false
+    reason: fixed_sequence_stopped_after_step_1_failure
+    passed: false
+group_means_gated_vs_fullset_best_constant:
+  chronos_2/epf_np: 0.0
+  chronos_2/rohlik_orders_1D: 0.0
+  chronos_2/rossmann_1D: -0.003405816350642546
+  chronos_2/solar_with_weather_1H: 0.0
+  timesfm_3/epf_np: 0.0
+  timesfm_3/rohlik_orders_1D: -0.01343338751292453
+  timesfm_3/rossmann_1D: -0.014786089821362435
+  timesfm_3/solar_with_weather_1H: -0.059490975317601794
+safety:
+  task_macro_point_gain_vs_fullset_best_constant:
+    chronos_2: -0.0008514540876606365
+    timesfm_3: -0.02192761316297219
+  per_backbone_requirement_passed: false
+  gated_minimum_group_mean_gain_vs_constant: -0.059490975317601794
+  ungated_minimum_group_mean_gain_vs_constant: -0.059490975317601794
+  gated_no_worse_than_ungated: true
+  interpretation: equality_only_not_downside_reduction
+integrity_checks_from_compact_report:
+  decision_rows_equal_routing_units_times_seven_methods: true
+  selected_rows_equal_routing_units_times_eight_including_oracle: true
+  route_mode_counts_sum_to_routing_units: true
+  reported_group_means_reproduce_step_1_macro_mean: true
+  reported_group_means_reproduce_per_backbone_means: true
+decision:
+  paper_success_gate_passed: false
+  positive_method_claim_supported: false
+  frozen_kill_condition_triggered: true
+  same_sealed_outcomes_may_be_used_for_method_revision: false
+  next_action: run_read_only_archive_audit_then_reassess_topic_viability
+

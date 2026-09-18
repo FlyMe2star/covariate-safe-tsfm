@@ -1,8 +1,8 @@
 # Outline contract
 
-Status: P1b method and evaluation design owner-approved and frozen
+Status: P1b frozen success gate failed; positive outline inactive; archive audit pending
 
-## Provisional story
+## Original provisional story (inactive after P1b)
 
 1. **Problem** — native covariate support creates a hidden input-policy decision, but
    routing reliability is not uniform across models and tasks.
@@ -57,3 +57,18 @@ same historical-utility router. Group means receive equal weight; unit-micro res
 are secondary. The design is documented in `notes/design/`, approved on 2026-09-17,
 and frozen before router-state construction or sealed access. The implementation is
 ready, while all P1b result claims remain planned until the sealed notebooks complete.
+
+## P1b outcome
+
+The frozen sealed evaluation did not support the proposed method story. Against the
+full-candidate calibration-best constant, the equal-group macro paired relative SQL
+gain was -0.0113895, with a one-sided 95% lower bound of -0.0238545. The first
+fixed-sequence test therefore failed. The gated-versus-ungated comparison is retained
+only as a descriptive result because the second inferential test was not entered.
+Both predeclared per-backbone safety checks were negative, and the gated and ungated
+worst-group values were equal rather than improved.
+
+No positive abstract, contribution, or result paragraph may be drafted from this
+outline. The bounded negative result is archived without threshold, method, or
+aggregation changes on the same sealed outcomes. A new positive paper requires a new
+topic or a separately predeclared protocol with independent evidence.

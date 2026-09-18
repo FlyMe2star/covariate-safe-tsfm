@@ -139,12 +139,20 @@ including integrity-checked resume across sessions. The cross-backbone completio
 decision is archived in
 [`evidence/runs/p1b_cross_backbone_completion_decision.yaml`](evidence/runs/p1b_cross_backbone_completion_decision.yaml).
 
-The next and only authorized run is the frozen CPU analysis:
+The frozen CPU analysis has completed. Its predeclared primary comparison failed:
+the equal-group macro paired relative SQL gain versus the calibration-best full-set
+constant was `-0.0113895`, with a one-sided 95% lower bound of `-0.0238545`.
+The conditional second test was therefore not inferentially entered, and both
+per-backbone safety checks failed. The bounded result is archived in
+[`evidence/results/p1b_sealed_analysis_summary.yaml`](evidence/results/p1b_sealed_analysis_summary.yaml).
 
-1. [`notebooks/12_p1b_analyze_sealed.ipynb`](notebooks/12_p1b_analyze_sealed.ipynb)
+The next and only authorized run is the CPU-only read-only archive audit:
 
-Send its complete compact JSON for evidence interpretation. No method or threshold may
-be revised after viewing that output.
+1. [`notebooks/13_p1b_archive_audit.ipynb`](notebooks/13_p1b_archive_audit.ipynb)
+
+It performs no model inference and no alternative scientific analysis. Send its
+complete compact JSON to close the evidence chain. No method, threshold, or aggregation
+may be revised using the sealed outcomes.
 
 Model weights remain governed by their upstream licenses; in particular, TimesFM 3
 weights are not covered by this repository's code license.
