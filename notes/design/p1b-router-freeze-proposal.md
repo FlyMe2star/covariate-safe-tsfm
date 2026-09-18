@@ -3,7 +3,7 @@
 Status: **owner-approved on 2026-09-17; frozen before router-state construction
 and sealed access**
 
-Canonical P1b configuration hash: `2b8b8284ae21`.
+Canonical P1b configuration hash: `151648d511c7`.
 
 ## Method
 
@@ -17,8 +17,10 @@ half-life of three origins, and remain fixed throughout sealed evaluation.
 In an inapplicable group, the method abstains from dynamic routing and uses one
 calibration-best constant logical policy. This policy is selected separately for every
 `(backbone, task)` from the complete P0b logical set after deterministic alias
-re-expansion. It minimizes mean per-unit calibration SQL, requires complete unit
-coverage, and is frozen before evaluation.
+re-expansion. It uses P0b's already frozen symmetric anchor rule: exclude a unit if
+target-only or all-dynamic SQL is non-finite. It then minimizes mean SQL among policies
+with a recorded row for every raw unit and finite SQL on every anchor-eligible unit.
+The selected policy is frozen before evaluation.
 
 ## Why scores remain calibration-frozen
 
@@ -60,3 +62,10 @@ fallback, comparisons, or aggregation.
 Execution order is fixed as notebooks 09 (CPU state), 10 and 11 (sealed backbone
 evaluation), then 12 (CPU fixed-sequence analysis). Each stage is reviewed before the
 next stage is authorized.
+
+Implementation clarification on 2026-09-18: the first CPU execution exposed the
+known 540 non-finite Rossmann anchor pairs already reported independently by both
+P0b backbones. Before router-state materialization and without accessing sealed
+origins, the constant selector was aligned exactly with P0b's symmetric finite-pair
+rule. No applicability decision, policy candidate, outcome, or success threshold was
+changed.

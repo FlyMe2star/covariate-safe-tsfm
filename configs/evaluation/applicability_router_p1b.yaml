@@ -3,6 +3,16 @@ experiment: applicability-gated-router-p1b-v1
 status: frozen_before_router_state_and_sealed_evaluation
 owner_approval: APPROVE_P1B
 owner_approval_date: "2026-09-17"
+implementation_clarification:
+  date: "2026-09-18"
+  trigger: first_CPU_router_state_build_before_state_materialization
+  evidence_basis:
+    - evidence/screening/chronos2_p0b_h2_summary.yaml
+    - evidence/screening/timesfm3_p0b_h2_summary.yaml
+  observed_nonfinite_rossmann_anchor_pairs_per_backbone: 540
+  sealed_evaluation_origins_accessed: false
+  changed: constant_selector_finite_unit_eligibility_only
+  unchanged: [applicability_map, candidate_policies, router_scores, comparisons, success_gates]
 prerequisite_p1a_config_hash: 6fe503a9d399
 prerequisite_p1a_decision: evidence/screening/p1a_applicability_decision.yaml
 seed: 42
@@ -49,8 +59,10 @@ historical_utility_router:
 constant_policy:
   role: fallback_for_inapplicable_groups_and_strong_constant_baseline
   candidates: all_logical_p0b_policy_ids_after_alias_reexpansion
-  require_complete_calibration_unit_coverage: true
-  require_all_calibration_sql_finite: true
+  calibration_unit_eligibility: target_only_and_all_dynamic_SQL_both_finite
+  nonfinite_anchor_pair_policy: exclude_symmetrically_before_policy_selection
+  require_complete_calibration_unit_record_coverage: true
+  require_all_selected_policy_SQL_finite_on_eligible_units: true
   selection_statistic: minimum_mean_per_unit_SQL_within_backbone_task
   tie_break: candidate_generator_order
   frozen_unit: [backbone, task]

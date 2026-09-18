@@ -23,7 +23,7 @@ def _one_task_parent():
 
 def test_frozen_p1b_loads_with_owner_approval():
     config, p0b, parent, p0a = load_frozen_p1b(REPO_ROOT)
-    assert EXPECTED_P1B_CONFIG_HASH == "2b8b8284ae21"
+    assert EXPECTED_P1B_CONFIG_HASH == "151648d511c7"
     assert config["owner_approval"] == "APPROVE_P1B"
     assert p0b["candidate_policies"]["fixed"] == ["target_only", "all_dynamic"]
     assert len(parent["data"]["tasks"]) == 4
@@ -70,6 +70,41 @@ def test_constant_selection_uses_complete_logical_policy_set():
     )
     assert result[task]["binary_best_policy_id"] == "target_only"
     assert result[task]["eligible_complete_finite_policy_count"] == len(order)
+
+
+def test_constant_selection_excludes_nonfinite_anchor_pairs_symmetrically():
+    _config, p0b, _parent, _p0a = load_frozen_p1b(REPO_ROOT)
+    parent = _one_task_parent()
+    task = "epf_np"
+    order = logical_policy_order(parent, p0b, task)
+    rows = []
+    for origin in (0, 1):
+        for index, policy in enumerate(order):
+            loss = 1.0 + index / 100.0
+            if origin == 0 and policy in {"target_only", "all_dynamic"}:
+                loss = float("nan")
+            if origin == 1 and policy == "single_known_future:Grid load forecast":
+                loss = 0.8
+            rows.append(
+                {
+                    "backbone": "chronos_2",
+                    "dataset_config": task,
+                    "origin_index": origin,
+                    "item_id": "x",
+                    "target": "y",
+                    "policy_id": policy,
+                    "SQL": loss,
+                }
+            )
+    result = select_constant_policies(
+        rows, parent=parent, p0b=p0b, backbone="chronos_2"
+    )[task]
+    assert result["fullset_best_policy_id"] == (
+        "single_known_future:Grid load forecast"
+    )
+    assert result["calibration_total_unit_count"] == 2
+    assert result["calibration_eligible_unit_count"] == 1
+    assert result["excluded_nonfinite_anchor_pair_count"] == 1
 
 
 def test_router_score_uses_all_calibration_observations_with_recency():

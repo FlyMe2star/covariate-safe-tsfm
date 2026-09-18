@@ -28,7 +28,7 @@ from covsafe.p0b import scientific_code_hash as p0b_scientific_code_hash
 from covsafe.p1a import EXPECTED_P1A_CONFIG_HASH
 from covsafe.p1a import scientific_code_hash as p1a_scientific_code_hash
 
-EXPECTED_P1B_CONFIG_HASH = "2b8b8284ae21"
+EXPECTED_P1B_CONFIG_HASH = "151648d511c7"
 P1B_CONFIG_PATH = Path("configs/evaluation/applicability_router_p1b.yaml")
 P1A_DECISION_PATH = Path("evidence/screening/p1a_applicability_decision.yaml")
 ROUTER_SCORE_FIELDS = (
@@ -101,6 +101,23 @@ def load_frozen_p1b(
         raise RuntimeError("P1b contract records pre-freeze sealed access")
     if scope["update_router_with_sealed_outcomes"]:
         raise RuntimeError("P1b must not update from sealed outcomes")
+    clarification = config["implementation_clarification"]
+    if clarification["sealed_evaluation_origins_accessed"] is not False:
+        raise RuntimeError("P1b clarification records sealed-origin access")
+    constant_policy = config["constant_policy"]
+    expected_constant_rules = {
+        "calibration_unit_eligibility": (
+            "target_only_and_all_dynamic_SQL_both_finite"
+        ),
+        "nonfinite_anchor_pair_policy": (
+            "exclude_symmetrically_before_policy_selection"
+        ),
+        "require_complete_calibration_unit_record_coverage": True,
+        "require_all_selected_policy_SQL_finite_on_eligible_units": True,
+    }
+    for key, expected in expected_constant_rules.items():
+        if constant_policy.get(key) != expected:
+            raise RuntimeError(f"P1b constant-policy rule drift: {key}")
 
     p0b, parent, p0a = load_frozen_p0b(root)
     if canonical_config_hash(p0b) != config["candidate_policies"][
@@ -284,7 +301,7 @@ def select_constant_policies(
     p0b: dict[str, Any],
     backbone: str,
 ) -> dict[str, Any]:
-    """Select full-set and binary constants with complete calibration coverage."""
+    """Select constants on P0b's symmetric finite-anchor calibration units."""
     rows = [dict(row) for row in expanded_records]
     by_task: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in rows:
@@ -297,13 +314,31 @@ def select_constant_policies(
         task_rows = by_task[task]
         order = logical_policy_order(parent, p0b, task)
         order_index = {policy: index for index, policy in enumerate(order)}
-        target_rows = [row for row in task_rows if row["policy_id"] == "target_only"]
-        units = {
-            (int(row["origin_index"]), str(row["item_id"]), str(row["target"]))
-            for row in target_rows
+        anchor_losses: dict[str, dict[tuple[int, str, str], float]] = {
+            "target_only": {},
+            "all_dynamic": {},
         }
+        for row in task_rows:
+            policy_id = str(row["policy_id"])
+            if policy_id not in anchor_losses:
+                continue
+            key = (int(row["origin_index"]), str(row["item_id"]), str(row["target"]))
+            if key in anchor_losses[policy_id]:
+                raise RuntimeError(f"duplicate calibration anchor row: {task}/{key}")
+            anchor_losses[policy_id][key] = float(row["SQL"])
+        units = set(anchor_losses["target_only"])
         if not units:
             raise RuntimeError(f"no calibration units for {backbone}/{task}")
+        if units != set(anchor_losses["all_dynamic"]):
+            raise RuntimeError(f"calibration anchor keys differ for {backbone}/{task}")
+        eligible_units = {
+            unit
+            for unit in units
+            if math.isfinite(anchor_losses["target_only"][unit])
+            and math.isfinite(anchor_losses["all_dynamic"][unit])
+        }
+        if not eligible_units:
+            raise RuntimeError(f"no finite calibration anchor pairs for {backbone}/{task}")
         losses: dict[str, dict[tuple[int, str, str], float]] = defaultdict(dict)
         for row in task_rows:
             policy_id = str(row["policy_id"])
@@ -317,14 +352,20 @@ def select_constant_policies(
         for policy_id in order:
             policy_losses = losses.get(policy_id, {})
             complete = set(policy_losses) == units
-            all_finite = complete and all(math.isfinite(value) for value in policy_losses.values())
+            all_finite = complete and all(
+                math.isfinite(policy_losses[unit]) for unit in eligible_units
+            )
             mean_sql = (
-                sum(policy_losses.values()) / len(policy_losses) if all_finite else None
+                sum(policy_losses[unit] for unit in eligible_units)
+                / len(eligible_units)
+                if all_finite
+                else None
             )
             statistics[policy_id] = {
-                "complete_unit_coverage": complete,
-                "all_sql_finite": all_finite,
-                "unit_count": len(policy_losses),
+                "complete_record_coverage": complete,
+                "all_sql_finite_on_eligible_units": all_finite,
+                "recorded_unit_count": len(policy_losses),
+                "eligible_unit_count": len(eligible_units),
                 "mean_sql": mean_sql,
             }
             if mean_sql is not None:
@@ -345,7 +386,10 @@ def select_constant_policies(
             "fullset_best_mean_sql": statistics[fullset]["mean_sql"],
             "binary_best_policy_id": binary,
             "binary_best_mean_sql": statistics[binary]["mean_sql"],
-            "calibration_unit_count": len(units),
+            "calibration_unit_count": len(eligible_units),
+            "calibration_total_unit_count": len(units),
+            "calibration_eligible_unit_count": len(eligible_units),
+            "excluded_nonfinite_anchor_pair_count": len(units - eligible_units),
             "logical_policy_count": len(order),
             "eligible_complete_finite_policy_count": len(eligible),
             "policy_statistics": statistics,

@@ -124,7 +124,7 @@ Rossmann, and Solar. The exact screening decision is archived in
 The P1b router and evaluation design was owner-approved on 2026-09-17 and is frozen in
 [`notes/design/p1b-router-freeze-proposal.md`](notes/design/p1b-router-freeze-proposal.md)
 and [`configs/evaluation/applicability_router_p1b.yaml`](configs/evaluation/applicability_router_p1b.yaml).
-Frozen P1b configuration hash: `2b8b8284ae21`.
+Frozen P1b configuration hash: `151648d511c7`.
 
 The next and only authorized run is the CPU prerequisite:
 
