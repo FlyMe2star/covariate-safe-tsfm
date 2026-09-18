@@ -1,7 +1,7 @@
 schema_version: 1
 decision: p1b-paper-viability-after-frozen-sealed-analysis
 decision_date: "2026-09-18"
-status: positive_method_route_stopped_audit_pending
+status: archive_verified_positive_method_route_stopped
 evidence: evidence/results/p1b_sealed_analysis_summary.yaml
 frozen_contract_outcome:
   primary_fixed_sequence_test_passed: false
@@ -24,8 +24,10 @@ paper_viability:
     - independently_predeclared_additional_tasks_or_backbones
     - explicit_failure_mechanism_analysis
     - new_untouched_evaluation_partition_or_external_benchmark
-  recommended_route: complete_read_only_archive_audit_then_pivot_topic
+  recommended_route: pivot_topic
 authorization:
   scientific_code_change: false
   new_model_inference: false
-  next_notebook: notebooks/13_p1b_archive_audit.ipynb
+  archive_audit_complete: true
+  archive_audit: evidence/audits/p1b_archive_audit_summary.yaml
+  further_work_on_current_positive_claim: false

@@ -1,6 +1,6 @@
 # Outline contract
 
-Status: P1b frozen success gate failed; positive outline inactive; archive audit pending
+Status: P1b frozen success gate failed; evidence archived; positive outline inactive
 
 ## Original provisional story (inactive after P1b)
 
@@ -72,3 +72,6 @@ No positive abstract, contribution, or result paragraph may be drafted from this
 outline. The bounded negative result is archived without threshold, method, or
 aggregation changes on the same sealed outcomes. A new positive paper requires a new
 topic or a separately predeclared protocol with independent evidence.
+
+The read-only archive audit passed all 20 integrity checks and fixed the analysis,
+router-state, sealed-inventory, and selected-loss hashes. The evidence chain is closed.

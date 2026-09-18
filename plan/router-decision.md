@@ -1,7 +1,7 @@
 # Router decision
 
 Route to **empirical-paper-writer** for an empirical ML paper.
-Status: frozen P1b positive route stopped; read-only archive audit pending
+Status: frozen P1b positive route stopped; evidence chain closed
 
 The project makes testable claims about model behavior and a deployable input-policy
 rule. A review-paper route would not answer the central question. The original P0
@@ -31,8 +31,8 @@ requirements, so the positive applicability-gated method paper is stopped.
 - The same sealed outcomes cannot authorize threshold changes, router revision, or a
   replacement confirmatory aggregation.
 
-The immediate route is a CPU-only archive audit. After that, the recommended research
-decision is to pivot rather than market the failed method. A negative-results study
+The read-only archive audit passed all 20 checks, so the evidence chain is closed.
+The recommended research decision is to pivot rather than market the failed method. A negative-results study
 would require independently predeclared additional tasks/backbones, mechanism evidence,
 and untouched evaluation data; the present result alone is not sufficient for the
 target venue.

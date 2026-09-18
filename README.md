@@ -146,13 +146,12 @@ The conditional second test was therefore not inferentially entered, and both
 per-backbone safety checks failed. The bounded result is archived in
 [`evidence/results/p1b_sealed_analysis_summary.yaml`](evidence/results/p1b_sealed_analysis_summary.yaml).
 
-The next and only authorized run is the CPU-only read-only archive audit:
-
-1. [`notebooks/13_p1b_archive_audit.ipynb`](notebooks/13_p1b_archive_audit.ipynb)
-
-It performs no model inference and no alternative scientific analysis. Send its
-complete compact JSON to close the evidence chain. No method, threshold, or aggregation
-may be revised using the sealed outcomes.
+The CPU-only read-only archive audit passed all 20 integrity checks. Its public summary
+is [`evidence/audits/p1b_archive_audit_summary.yaml`](evidence/audits/p1b_archive_audit_summary.yaml).
+The evidence chain is closed and the positive method route is stopped. No method,
+threshold, or aggregation may be revised using the sealed outcomes. The recommended
+next action is a topic pivot; retaining this as a negative-results study would require
+independently predeclared new breadth and untouched evaluation evidence.
 
 Model weights remain governed by their upstream licenses; in particular, TimesFM 3
 weights are not covered by this repository's code license.

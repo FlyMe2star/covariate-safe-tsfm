@@ -1,13 +1,17 @@
 schema_version: 1
 artifact: p1b-sealed-analysis-summary
-result_status: verified_negative_result_reproducibility_audit_pending
+result_status: verified_negative_result_archived
 review_date: "2026-09-18"
 source:
   private_report: private_manifests/p1b/reports/p1b_sealed_analysis.json
   config_hash: 151648d511c7
   git_commit: 362205a0b7dfc1e362bf5dd1489c1f42f3ac9814
   scientific_code_sha256: 85f27f8ea20970f2dda317772ae15d99ccf2eaafdeacbc1f0594845c74699938
-  report_sha256: pending_read_only_archive_audit
+  report_sha256: e4bc4fc126502a9ca80af8b31adb6353bdc2b23865965cee0053cc13290a90ab
+  router_state_sha256: eac4c0baaa88334dbf18e687ff8f2ded35caab4bd49082249686172f9f26f9dd
+  sealed_evaluation_inventory_sha256: b44e3680984d0c410bf552a4c9fd69a000d1c6d6df7fa2876b0ec98cb8c33b5b
+  selected_loss_artifact_sha256: 0ad30d82ca47a18e47d94c214c10c18b7932aad4b4ee212f4bbb48eacfa0b8a5
+  archive_audit: evidence/audits/p1b_archive_audit_summary.yaml
 counts:
   routing_units: 8980
   decision_rows: 62860
@@ -67,4 +71,5 @@ decision:
   positive_method_claim_supported: false
   frozen_kill_condition_triggered: true
   same_sealed_outcomes_may_be_used_for_method_revision: false
-  next_action: run_read_only_archive_audit_then_reassess_topic_viability
+  evidence_chain_closed: true
+  next_action: topic_pivot_recommended

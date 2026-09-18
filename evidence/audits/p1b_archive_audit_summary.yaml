@@ -1,0 +1,36 @@
+schema_version: 1
+audit: p1b-read-only-archive-audit
+result_status: verified
+created_at_utc: "2026-09-18T04:55:17.594073+00:00"
+audit_git_commit: f6593921f415a7e866f0a5b125dd275d4ccf18ed
+config_hash: 151648d511c7
+scientific_code_sha256: 85f27f8ea20970f2dda317772ae15d99ccf2eaafdeacbc1f0594845c74699938
+artifacts:
+  analysis_report_sha256: e4bc4fc126502a9ca80af8b31adb6353bdc2b23865965cee0053cc13290a90ab
+  router_state_sha256: eac4c0baaa88334dbf18e687ff8f2ded35caab4bd49082249686172f9f26f9dd
+  sealed_evaluation_inventory_sha256: b44e3680984d0c410bf552a4c9fd69a000d1c6d6df7fa2876b0ec98cb8c33b5b
+  selected_loss_artifact_sha256: 0ad30d82ca47a18e47d94c214c10c18b7932aad4b4ee212f4bbb48eacfa0b8a5
+counts:
+  decision_rows: 62860
+  exhaustive_policy_loss_rows: 143736
+  selected_method_loss_rows: 71840
+checks:
+  immutable_artifact_checks_total: 20
+  immutable_artifact_checks_passed: 20
+  analysis_config_hash_matches: true
+  analysis_scientific_code_hash_matches: true
+  analysis_router_state_hash_matches: true
+  analysis_sealed_inventory_hash_matches: true
+  row_counts_match: true
+  selected_artifact_hash_and_count_match: true
+  backbone_completion_manifests_match: true
+  fixed_sequence_failure_state_matches: true
+scope:
+  model_inference_performed: false
+  scientific_analysis_recomputed: false
+  method_or_threshold_revised: false
+  source_artifacts_modified: false
+decision:
+  evidence_chain_closed: true
+  positive_method_route_reopened: false
+  next_action: topic_pivot_recommended

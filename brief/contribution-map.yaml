@@ -1,6 +1,6 @@
 project: covariate-safe-tsfm
 working_title: "When Covariate Routing Is Trustworthy: Applicability-Gated Input Selection for Zero-Shot Time-Series Foundation Models"
-status: p1b_success_gate_failed_reproducibility_audit_pending
+status: p1b_verified_negative_archived_positive_route_stopped
 core_question: >-
   Can calibration-only historical utility certify the task-backbone groups in which
   dynamic covariate-policy routing is reliable, while safely falling back to a constant
@@ -133,4 +133,6 @@ p1b_outcome:
   safety_passed: false
   frozen_kill_condition_triggered: true
   method_revision_on_same_sealed_results: prohibited
-  decision: archive_bounded_negative_result_then_pivot_or_predeclare_independent_expansion
+  archive_audit_verified: true
+  archive_audit: evidence/audits/p1b_archive_audit_summary.yaml
+  decision: pivot_topic_or_predeclare_independent_negative_study_expansion
