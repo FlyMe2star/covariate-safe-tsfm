@@ -68,4 +68,3 @@ decision:
   frozen_kill_condition_triggered: true
   same_sealed_outcomes_may_be_used_for_method_revision: false
   next_action: run_read_only_archive_audit_then_reassess_topic_viability
-
