@@ -1,0 +1,57 @@
+schema_version: 1
+artifact: p1b-chronos2-sealed-inference-completion
+result_status: verified_completion_not_aggregate_result
+review_date: "2026-09-18"
+experiment: applicability-gated-router-p1b-v1
+config_hash: 151648d511c7
+git_commit: ea9e52cf0b3389cd058f1ab3aaf937290419a32f
+scientific_code_sha256: 85f27f8ea20970f2dda317772ae15d99ccf2eaafdeacbc1f0594845c74699938
+router_state_sha256: eac4c0baaa88334dbf18e687ff8f2ded35caab4bd49082249686172f9f26f9dd
+backbone: chronos_2
+model:
+  checkpoint: amazon/chronos-2
+  checkpoint_revision: 29ec3766d36d6f73f0696f85560a422f50e8498c
+  torch_dtype: float32
+runtime:
+  python: 3.13.15
+  platform: Linux-6.6.122+-x86_64-with-glibc2.39
+  torch: 2.11.0+cu128
+  cuda: "12.8"
+  gpu: NVIDIA A100-SXM4-40GB
+  fev: 0.11.0.dev0
+  chronos_forecasting: 2.2.2
+completion:
+  completed_origin_count: 22
+  expected_origin_count: 22
+  evaluated_policy_run_count: 308
+  expected_policy_run_count: 308
+  loss_row_count_from_origin_logs: 71868
+  expected_loss_row_count: 71868
+  total_inference_time_seconds: 602.6896549419989
+  sealed_results_aggregated: false
+origin_breakdown:
+  epf_np: {origins: 8, policies_per_origin: 4, loss_rows_per_origin: 4}
+  rohlik_orders_1D: {origins: 2, policies_per_origin: 22, loss_rows_per_origin: 154}
+  rossmann_1D: {origins: 4, policies_per_origin: 16, loss_rows_per_origin: 17840}
+  solar_with_weather_1H: {origins: 8, policies_per_origin: 21, loss_rows_per_origin: 21}
+review_checks:
+  config_hash_matches_frozen_contract: true
+  scientific_code_hash_matches_frozen_state: true
+  router_state_hash_present: true
+  origin_count_matches_exact_partition: true
+  policy_run_count_matches_exact_enumeration: true
+  loss_row_count_matches_exact_enumeration: true
+  completion_report_emitted: true
+  aggregate_scientific_comparison_computed: false
+  buffer_errors_fatal: false
+authorization:
+  timesfm_3_sealed_notebook_authorized: true
+  p1b_analysis_notebook_authorized: false
+  paper_claim_upgraded: false
+private_manifest:
+  path: /content/drive/MyDrive/covariate-safe-tsfm/private_manifests/p1b/reports/chronos_2_p1b_completion.json
+  must_remain_outside_git: true
+notes:
+  - The logged BufferError messages were exception-ignored Python 3.13 BytesIO cleanup warnings.
+  - Every expected origin emitted a SAVED line before the completion report.
+  - This artifact proves exhaustive sealed inference completion only; it contains no method comparison.

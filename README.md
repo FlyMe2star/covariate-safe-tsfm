@@ -130,13 +130,17 @@ The CPU prerequisite is verified and archived in
 [`evidence/method/p1b_router_state_summary.yaml`](evidence/method/p1b_router_state_summary.yaml).
 It confirms calibration-only construction with no sealed-origin access.
 
-The next and only authorized run is the Chronos-2 sealed evaluation, preferably on
+The Chronos-2 sealed evaluation completed all 22 expected origins and 308 policy
+runs without aggregating the scientific comparison. Its completion proof is archived
+in [`evidence/runs/p1b_chronos2_completion_summary.yaml`](evidence/runs/p1b_chronos2_completion_summary.yaml).
+
+The next and only authorized run is the TimesFM-3 sealed evaluation, preferably on
 an A100:
 
-1. [`notebooks/10_chronos2_p1b_sealed.ipynb`](notebooks/10_chronos2_p1b_sealed.ipynb)
+1. [`notebooks/11_timesfm3_p1b_sealed.ipynb`](notebooks/11_timesfm3_p1b_sealed.ipynb)
 
-Send its completion JSON for review before running notebook 11. Notebooks 11 and 12
-remain blocked at this checkpoint.
+Send its completion JSON for review before running notebook 12. The final analysis
+remains blocked at this checkpoint.
 
 Model weights remain governed by their upstream licenses; in particular, TimesFM 3
 weights are not covered by this repository's code license.

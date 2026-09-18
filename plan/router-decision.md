@@ -1,7 +1,7 @@
 # Router decision
 
 Route to **empirical-paper-writer** for an empirical ML paper.
-Status: empirical route retained; P1b router state verified; Chronos sealed run authorized
+Status: empirical route retained; Chronos sealed run complete; TimesFM sealed run authorized
 
 The project makes testable claims about model behavior and a deployable input-policy
 rule. A review-paper route would not answer the central question. The original P0

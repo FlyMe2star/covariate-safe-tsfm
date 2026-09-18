@@ -66,4 +66,5 @@ authorization:
   paper_claim_upgraded: false
 private_manifest:
   path: /content/drive/MyDrive/covariate-safe-tsfm/private_manifests/p1b/reports/p1b_router_state.json
+  sha256: eac4c0baaa88334dbf18e687ff8f2ded35caab4bd49082249686172f9f26f9dd
   must_remain_outside_git: true

@@ -1,6 +1,6 @@
 project: covariate-safe-tsfm
 working_title: "When Covariate Routing Is Trustworthy: Applicability-Gated Input Selection for Zero-Shot Time-Series Foundation Models"
-status: p1b_router_state_verified_chronos_sealed_authorized
+status: p1b_chronos_complete_timesfm_sealed_authorized
 core_question: >-
   Can calibration-only historical utility certify the task-backbone groups in which
   dynamic covariate-policy routing is reliable, while safely falling back to a constant
