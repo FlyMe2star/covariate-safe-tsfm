@@ -1,0 +1,60 @@
+schema_version: 1
+artifact: p1b-timesfm3-sealed-inference-completion
+result_status: verified_completion_not_aggregate_result
+review_date: "2026-09-18"
+experiment: applicability-gated-router-p1b-v1
+config_hash: 151648d511c7
+git_commit: 696b5ba57b362186094f8e0e00df51fa9eb2c09c
+scientific_code_sha256: 85f27f8ea20970f2dda317772ae15d99ccf2eaafdeacbc1f0594845c74699938
+router_state_sha256: eac4c0baaa88334dbf18e687ff8f2ded35caab4bd49082249686172f9f26f9dd
+backbone: timesfm_3
+model:
+  checkpoint: google/timesfm-3.0-pytorch
+  checkpoint_revision: 43046b85ec22d584a13f8098c2ed39c889e129c2
+  source_commit: 20191171b74f51bfead932b6b8d0c8f515e70f63
+  fev_wrapper_commit: 38007871dcf6dc6b04aed3a54d9cd86678d48d0b
+  license: timesfm-non-commercial-license-v1.0
+runtime:
+  python: 3.13.15
+  platform: Linux-6.6.122+-x86_64-with-glibc2.39
+  torch: 2.11.0+cu128
+  cuda: "12.8"
+  gpu: NVIDIA A100-SXM4-40GB
+  fev: 0.11.0.dev0
+  timesfm: 2.0.2
+completion:
+  completed_origin_count: 22
+  expected_origin_count: 22
+  evaluated_policy_run_count: 308
+  expected_policy_run_count: 308
+  loss_row_count_from_origin_logs: 71868
+  expected_loss_row_count: 71868
+  resumed_origin_count_in_final_session: 12
+  newly_completed_origin_count_in_final_session: 10
+  cumulative_inference_time_seconds: 3411.855107945995
+  sealed_results_aggregated: false
+origin_breakdown:
+  epf_np: {origins: 8, policies_per_origin: 4, loss_rows_per_origin: 4}
+  rohlik_orders_1D: {origins: 2, policies_per_origin: 22, loss_rows_per_origin: 154}
+  rossmann_1D: {origins: 4, policies_per_origin: 16, loss_rows_per_origin: 17840}
+  solar_with_weather_1H: {origins: 8, policies_per_origin: 21, loss_rows_per_origin: 21}
+review_checks:
+  config_hash_matches_frozen_contract: true
+  scientific_code_hash_matches_frozen_state: true
+  router_state_hash_matches_chronos_completion: true
+  resumed_origins_passed_integrity_verification: true
+  origin_count_matches_exact_partition: true
+  policy_run_count_matches_exact_enumeration: true
+  loss_row_count_matches_exact_enumeration: true
+  completion_report_emitted: true
+  aggregate_scientific_comparison_computed: false
+authorization:
+  p1b_analysis_notebook_authorized_after_cross_backbone_check: true
+  paper_claim_upgraded: false
+private_manifest:
+  path: /content/drive/MyDrive/covariate-safe-tsfm/private_manifests/p1b/reports/timesfm_3_p1b_completion.json
+  must_remain_outside_git: true
+notes:
+  - RESUME means the per-origin decision and loss sidecars and their CSV hashes were reverified.
+  - The cumulative time includes origins completed across earlier sessions.
+  - This artifact proves exhaustive sealed inference completion only; it contains no method comparison.

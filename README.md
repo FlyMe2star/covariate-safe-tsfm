@@ -134,13 +134,17 @@ The Chronos-2 sealed evaluation completed all 22 expected origins and 308 policy
 runs without aggregating the scientific comparison. Its completion proof is archived
 in [`evidence/runs/p1b_chronos2_completion_summary.yaml`](evidence/runs/p1b_chronos2_completion_summary.yaml).
 
-The next and only authorized run is the TimesFM-3 sealed evaluation, preferably on
-an A100:
+The TimesFM-3 sealed evaluation also completed all 22 origins and 308 policy runs,
+including integrity-checked resume across sessions. The cross-backbone completion
+decision is archived in
+[`evidence/runs/p1b_cross_backbone_completion_decision.yaml`](evidence/runs/p1b_cross_backbone_completion_decision.yaml).
 
-1. [`notebooks/11_timesfm3_p1b_sealed.ipynb`](notebooks/11_timesfm3_p1b_sealed.ipynb)
+The next and only authorized run is the frozen CPU analysis:
 
-Send its completion JSON for review before running notebook 12. The final analysis
-remains blocked at this checkpoint.
+1. [`notebooks/12_p1b_analyze_sealed.ipynb`](notebooks/12_p1b_analyze_sealed.ipynb)
+
+Send its complete compact JSON for evidence interpretation. No method or threshold may
+be revised after viewing that output.
 
 Model weights remain governed by their upstream licenses; in particular, TimesFM 3
 weights are not covered by this repository's code license.

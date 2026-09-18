@@ -1,0 +1,32 @@
+schema_version: 1
+decision: p1b-cross-backbone-sealed-inference-completion
+result_status: verified_completion_decision_not_aggregate_result
+review_date: "2026-09-18"
+config_hash: 151648d511c7
+scientific_code_sha256: 85f27f8ea20970f2dda317772ae15d99ccf2eaafdeacbc1f0594845c74699938
+router_state_sha256: eac4c0baaa88334dbf18e687ff8f2ded35caab4bd49082249686172f9f26f9dd
+backbones:
+  chronos_2:
+    summary: evidence/runs/p1b_chronos2_completion_summary.yaml
+    completed_origin_count: 22
+    evaluated_policy_run_count: 308
+    expected_loss_row_count: 71868
+    complete: true
+  timesfm_3:
+    summary: evidence/runs/p1b_timesfm3_completion_summary.yaml
+    completed_origin_count: 22
+    evaluated_policy_run_count: 308
+    expected_loss_row_count: 71868
+    complete: true
+checks:
+  both_backbones_complete: true
+  shared_config_hash: true
+  shared_scientific_code_hash: true
+  shared_router_state_hash: true
+  aggregate_scientific_comparison_computed: false
+decision_outcome:
+  action: authorize_frozen_p1b_analysis_notebook
+  notebook: notebooks/12_p1b_analyze_sealed.ipynb
+  method_revision_authorized: false
+  paper_claim_upgraded: false
+  result_interpretation_before_analysis: prohibited
